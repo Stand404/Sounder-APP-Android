@@ -20,8 +20,6 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -96,7 +94,7 @@ fun TaskManagerScreen() {
                 ) {
                     OutlinedButton(onClick = { audioPlayer.stopAll() }) {
                         Icon(
-                            imageVector = Icons.Filled.Stop,
+                            painter = painterResource(R.drawable.ic_stop),
                             contentDescription = null,
                             modifier = Modifier.size(18.dp)
                         )
@@ -255,7 +253,7 @@ private fun TaskItemCard(
 
         Button(onClick = onStop) {
             Icon(
-                imageVector = Icons.Filled.Stop,
+                painter = painterResource(R.drawable.ic_stop),
                 contentDescription = null,
                 modifier = Modifier.size(18.dp)
             )

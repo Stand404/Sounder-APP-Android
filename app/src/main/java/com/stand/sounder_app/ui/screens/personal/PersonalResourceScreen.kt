@@ -18,8 +18,6 @@ import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -199,7 +197,7 @@ fun PersonalResourceScreen(
                 )
                 IconButton(onClick = { showAddSheet = true }) {
                     Icon(
-                        imageVector = Icons.Filled.Add,
+                        painter = painterResource(R.drawable.ic_add),
                         contentDescription = stringResource(R.string.add_resource_desc),
                         tint = MaterialTheme.colorScheme.primary
                     )

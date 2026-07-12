@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -17,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.stand.sounder_app.ui.components.SearchBox
@@ -44,7 +42,7 @@ fun SearchHeader(
     ) {
         IconButton(onClick = onBack) {
             Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                painter = painterResource(R.drawable.ic_arrow_back),
                 contentDescription = stringResource(R.string.back)
             )
         }
@@ -62,7 +60,7 @@ fun SearchHeader(
         Spacer(modifier = Modifier.width(4.dp))
         IconButton(onClick = onSearch) {
             Icon(
-                imageVector = Icons.Filled.Search,
+                painter = painterResource(R.drawable.ic_search),
                 contentDescription = stringResource(R.string.search)
             )
         }
