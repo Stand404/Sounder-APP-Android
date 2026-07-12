@@ -18,18 +18,13 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.Store
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -39,13 +34,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.stand.sounder_app.ui.components.EmptyState
 import com.stand.sounder_app.ui.components.LoadingSkeleton
 import com.stand.sounder_app.ui.components.ShopCard
-import com.stand.sounder_app.ui.screens.shop.ShopHeader
 import androidx.compose.ui.res.painterResource
 import com.stand.sounder_app.R
 import com.stand.sounder_app.viewmodel.ShopViewModel
@@ -93,7 +86,7 @@ fun ShopScreen(
                     .weight(1f)
             ) {
                 when {
-                    uiState.isLoading -> {
+                    uiState.isLoading && !uiState.isRefreshing -> {
                         LoadingSkeleton(
                             modifier = Modifier.padding(top = 8.dp)
                         )
@@ -126,8 +119,8 @@ fun ShopScreen(
                     }
 
                     else -> {
-                        androidx.compose.material3.pulltorefresh.PullToRefreshBox(
-                            isRefreshing = uiState.isLoading,
+                        PullToRefreshBox(
+                            isRefreshing = uiState.isRefreshing,
                             onRefresh = { viewModel.loadResources() },
                             modifier = Modifier.fillMaxSize()
                         ) {

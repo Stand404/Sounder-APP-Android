@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
@@ -66,16 +65,18 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.ui.draw.shadow
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.stand.sounder_app.ui.components.LoadingSkeleton
 import com.stand.sounder_app.ui.theme.AccentBlue
+import com.stand.sounder_app.util.formatAudioDuration
 import com.stand.sounder_app.viewmodel.EditViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
@@ -113,9 +114,9 @@ fun EditScreen(
         } else {
             val listState = rememberLazyListState()
             var draggingItemId by remember { mutableStateOf<String?>(null) }
-            var dragAccumulator by remember { mutableStateOf(0f) }
-            var dragOffset by remember { mutableStateOf(0f) }
-            var itemHeightPx by remember { mutableStateOf(0f) }
+            var dragAccumulator by remember { mutableFloatStateOf(0f) }
+            var dragOffset by remember { mutableFloatStateOf(0f) }
+            var itemHeightPx by remember { mutableFloatStateOf(0f) }
             LazyColumn(
                 state = listState,
                 contentPadding = PaddingValues(bottom = 72.dp),
@@ -179,19 +180,16 @@ fun EditScreen(
                         val isDragging = draggingItemId == audioItem.id
                         AudioEditRow(
                             audioItem = audioItem,
-                            index = index,
                             isSelected = index in uiState.selectedAudioIndices,
                             isPlaying = index == uiState.playingIndex,
                             isDragging = isDragging,
                             onToggleSelect = { viewModel.toggleAudioSelection(index) },
                             onTogglePlay = { viewModel.togglePreview(index) },
                             onNameChange = { viewModel.updateAudioName(index, it) },
-                            focusManager = focusManager,
                             modifier = Modifier
                                 .zIndex(if (isDragging) 1f else 0f)
                                 .graphicsLayer {
                                     translationY = if (isDragging) dragOffset else 0f
-                                    shadowElevation = if (isDragging) 16f else 0f
                                     scaleX = if (isDragging) 1.02f else 1f
                                     scaleY = if (isDragging) 1.02f else 1f
                                 }
@@ -343,7 +341,7 @@ private fun BasicInfoSection(
                     } else {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Icon(
-                                imageVector = Icons.Filled.PhotoLibrary,
+                                painter = painterResource(R.drawable.ic_broken_image),
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.size(26.dp)
@@ -471,14 +469,12 @@ private fun DragHandleIcon() {
 @Composable
 private fun AudioEditRow(
     audioItem: com.stand.sounder_app.data.model.AudioItem,
-    index: Int,
     isSelected: Boolean,
     isPlaying: Boolean,
     isDragging: Boolean = false,
     onToggleSelect: () -> Unit,
     onTogglePlay: () -> Unit,
     onNameChange: (String) -> Unit,
-    focusManager: FocusManager,
     modifier: Modifier = Modifier
 ) {
     Card(

@@ -43,11 +43,9 @@ import com.stand.sounder_app.util.formatDuration
 fun AudioItemRow(
     name: String,
     duration: Long,
-    index: Int,
     isPlaying: Boolean,
     isLoading: Boolean,
     isFirst: Boolean = false,
-    isLast: Boolean = false,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {

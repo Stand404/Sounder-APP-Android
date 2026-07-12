@@ -75,12 +75,16 @@ object ShortcutPermissionChecker {
             if (query == null) {
                 ShortcutPermState.UNKNOWN
             } else {
+                val titleIndex = query.getColumnIndex("title")
+                val permissionIndex = query.getColumnIndex("shortcutPermission")
+                if (titleIndex < 0 || permissionIndex < 0) return ShortcutPermState.UNKNOWN
+
                 val appName = getAppName(context)
                 var state = ShortcutPermState.UNKNOWN
                 while (query.moveToNext()) {
-                    val title = query.getString(query.getColumnIndexOrThrow("title"))
+                    val title = query.getString(titleIndex)
                     if (!TextUtils.isEmpty(title) && title == appName) {
-                        val value = query.getInt(query.getColumnIndexOrThrow("shortcutPermission"))
+                        val value = query.getInt(permissionIndex)
                         state = when (value) {
                             1, 17 -> ShortcutPermState.DENIED
                             16 -> ShortcutPermState.GRANTED
@@ -130,10 +134,13 @@ object ShortcutPermissionChecker {
         val uri = Uri.parse("content://settings/secure/launcher_shortcut_permission_settings")
         val query = contentResolver.query(uri, null, null, null, null) ?: return ShortcutPermState.UNKNOWN
         return try {
+            val valueIndex = query.getColumnIndex("value")
+            if (valueIndex < 0) return ShortcutPermState.UNKNOWN
+
             val pkg = context.applicationContext.packageName
             var state = ShortcutPermState.UNKNOWN
             while (query.moveToNext()) {
-                val value = query.getString(query.getColumnIndex("value")) ?: continue
+                val value = query.getString(valueIndex) ?: continue
                 if (value.contains("$pkg, 1")) {
                     state = ShortcutPermState.GRANTED
                     break

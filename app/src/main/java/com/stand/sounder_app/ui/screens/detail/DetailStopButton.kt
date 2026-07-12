@@ -46,11 +46,10 @@ fun DetailStopButton(
         Surface(
             onClick = { onStop() },
             modifier = Modifier
-                .padding(bottom = if (bottomBarVisible) 80.dp else 16.dp)
+                .padding(bottom = if (bottomBarVisible) 80.dp else 20.dp)
                 .padding(horizontal = 16.dp),
             shape = RoundedCornerShape(50),
             color = Color.Transparent,
-            shadowElevation = 8.dp
         ) {
             Box(
                 modifier = Modifier

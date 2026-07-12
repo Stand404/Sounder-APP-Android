@@ -171,6 +171,8 @@
     <string name="shortcut_requested">Добавил「%1$s」на рабочий стол, а потом ткни — и заиграет♪</string>
     <string name="shortcut_sent">Запрос на добавление на рабочий стол отправлен. Если он не появился, разреши「Ярлык рабочего стола」в настройках лаунчера♪</string>
     <string name="shortcut_try_anyway">Всё равно попробуем, мяу~</string>
+    <string name="shortcut_resource_deleted">Ресурс не найден, возможно, удалён</string>
+    <string name="shortcut_no_audio">У этого ресурса ещё нет воспроизводимого аудио</string>
 
     <!-- Значения нового ресурса по умолчанию -->
     <string name="new_resource_name">Новый пакет ресурсов</string>

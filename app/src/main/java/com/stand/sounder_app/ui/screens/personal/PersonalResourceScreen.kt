@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.lazy.LazyColumn
@@ -83,7 +82,6 @@ fun PersonalResourceScreen(
     val resumableIds by viewModel.resumableIds.collectAsState()
     val context = LocalContext.current
 
-    var showMenuResourceId by remember { mutableStateOf<String?>(null) }
     var showDeleteDialog by remember { mutableStateOf(false) }
     var pendingDeleteId by remember { mutableStateOf<String?>(null) }
     var showAddSheet by remember { mutableStateOf(false) }
@@ -251,7 +249,7 @@ fun PersonalResourceScreen(
                                 item {
                                     Box(
                                         modifier = Modifier.fillMaxWidth().padding(32.dp),
-                                        contentAlignment = androidx.compose.ui.Alignment.Center
+                                        contentAlignment = Alignment.Center
                                     ) {
                                         Text(
                                             text = stringResource(R.string.no_match),

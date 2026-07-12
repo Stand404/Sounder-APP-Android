@@ -17,7 +17,6 @@ import com.stand.sounder_app.R
 @Composable
 fun EditHeader(
     onBack: () -> Unit,
-    title: String = "",
     modifier: Modifier = Modifier
 ) {
     Row(

@@ -171,6 +171,8 @@
     <string name="shortcut_requested">已經把「%1$s」放到桌面啦，之後戳一下就能播哦♪</string>
     <string name="shortcut_sent">新增桌面的請求已經送出去啦，要是沒冒出來，就去啟動器設定裡給「桌面捷徑」開個綠燈哦♪</string>
     <string name="shortcut_try_anyway">偏要試試喵~</string>
+    <string name="shortcut_resource_deleted">資源不存在，可能已經被刪掉了</string>
+    <string name="shortcut_no_audio">這個資源還沒有可以播放的音訊呢</string>
 
     <!-- 新資源預設值 -->
     <string name="new_resource_name">新建資源包</string>

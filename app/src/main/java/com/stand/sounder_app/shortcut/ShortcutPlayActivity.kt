@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.stand.sounder_app.MyApp
+import com.stand.sounder_app.R
 import com.stand.sounder_app.data.model.LoopMode
 import com.stand.sounder_app.data.model.OrderMode
 import com.stand.sounder_app.data.model.PlayMode
@@ -32,13 +33,13 @@ class ShortcutPlayActivity : Activity() {
                 if (resource == null) {
                     android.widget.Toast.makeText(
                         this,
-                        "资源不存在，可能已被删除",
+                        getString(R.string.shortcut_resource_deleted),
                         android.widget.Toast.LENGTH_SHORT
                     ).show()
                 } else if (resource.audioList.isEmpty()) {
                     android.widget.Toast.makeText(
                         this,
-                        "该资源没有可播放的音频文件",
+                        getString(R.string.shortcut_no_audio),
                         android.widget.Toast.LENGTH_SHORT
                     ).show()
                 } else {

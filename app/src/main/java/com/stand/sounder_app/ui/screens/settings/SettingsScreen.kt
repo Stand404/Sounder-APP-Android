@@ -30,14 +30,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,7 +50,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.stand.sounder_app.R
@@ -62,7 +58,6 @@ import com.stand.sounder_app.ui.components.IosActionSheet
 import com.stand.sounder_app.ui.components.IosActionSheetItem
 import com.stand.sounder_app.ui.components.PillOption
 import com.stand.sounder_app.ui.components.PillToggle
-import com.stand.sounder_app.ui.screens.settings.SettingsHeader
 import com.stand.sounder_app.viewmodel.SettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

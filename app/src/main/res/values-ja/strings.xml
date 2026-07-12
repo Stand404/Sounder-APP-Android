@@ -171,6 +171,8 @@
     <string name="shortcut_requested">「%1$s」をデスクトップに追加したにゃ、あとはちょんと押せば再生できるよ♪</string>
     <string name="shortcut_sent">デスクトップ追加のお願いを送ったにゃ。出てこない時は、ランチャー設定で「デスクトップショートカット」を許可してね♪</string>
     <string name="shortcut_try_anyway">それでもにゃって試す</string>
+    <string name="shortcut_resource_deleted">リソースが見つかりません、削除された可能性があります</string>
+    <string name="shortcut_no_audio">このリソースにはまだ再生できる音声がないにゃ</string>
 
     <!-- 新規リソースの初期値 -->
     <string name="new_resource_name">新規リソースパック</string>

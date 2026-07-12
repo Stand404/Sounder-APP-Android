@@ -28,17 +28,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -57,10 +51,8 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.stand.sounder_app.ui.components.EmptyState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.stand.sounder_app.R
@@ -70,8 +62,6 @@ import java.util.Calendar
 import java.util.Locale
 import com.stand.sounder_app.data.model.SubmissionStatus
 import com.stand.sounder_app.ui.components.PillOption
-import com.stand.sounder_app.ui.components.PillToggle
-import com.stand.sounder_app.ui.screens.submissions.SubmissionsHeader
 import com.stand.sounder_app.viewmodel.SubmissionsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -268,21 +258,6 @@ fun SubmissionsScreen(
 }
 
 @Composable
-private fun TextButtonCompat(
-    onClick: () -> Unit,
-    content: @Composable () -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp, vertical = 8.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) { content() }
-    }
-}
-
-@Composable
 private fun SubmissionCard(
     submission: Submission,
     onCopyLink: (String) -> Unit
@@ -423,16 +398,16 @@ private fun SubmissionCard(
                     }
                 }
                 if (!submission.imageSourceLink.isNullOrBlank()) {
-                    LinkRow(label = stringResource(R.string.submission_form_image_source_link), link = submission.imageSourceLink!!, onCopyLink = onCopyLink)
+                    LinkRow(label = stringResource(R.string.submission_form_image_source_link), link = submission.imageSourceLink, onCopyLink = onCopyLink)
                 }
                 if (!submission.voiceSourceLink.isNullOrBlank()) {
-                    LinkRow(label = stringResource(R.string.submission_form_voice_source_link), link = submission.voiceSourceLink!!, onCopyLink = onCopyLink)
+                    LinkRow(label = stringResource(R.string.submission_form_voice_source_link), link = submission.voiceSourceLink, onCopyLink = onCopyLink)
                 }
                 if (!submission.fileLink.isNullOrBlank()) {
-                    DetailRow(label = stringResource(R.string.submission_form_notes), value = submission.fileLink!!)
+                    DetailRow(label = stringResource(R.string.submission_form_notes), value = submission.fileLink)
                 }
                 if (!submission.platformId.isNullOrBlank()) {
-                    DetailRow(label = stringResource(R.string.submission_form_platform_id), value = submission.platformId!!)
+                    DetailRow(label = stringResource(R.string.submission_form_platform_id), value = submission.platformId)
                 }
             }
         }

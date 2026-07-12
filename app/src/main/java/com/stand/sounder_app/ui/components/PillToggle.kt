@@ -16,7 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,12 +53,12 @@ fun <T> PillToggle(
         val itemWeight = 1f / options.size
 
         // 滑动指示器（叠加层）
-        val totalWidth = remember { mutableStateOf(0) }
+        val totalWidth = remember { mutableIntStateOf(0) }
         val density = LocalDensity.current
         val indicatorOffset by animateDpAsState(
-            targetValue = if (totalWidth.value > 0) {
+            targetValue = if (totalWidth.intValue > 0) {
                 // totalWidth.value 为像素值，先转为 dp 再计算偏移
-                val totalDp = with(density) { totalWidth.value.toDp() }
+                val totalDp = with(density) { totalWidth.intValue.toDp() }
                 (totalDp - 8.dp) * itemWeight * selectedIndex
             } else 0.dp,
             animationSpec = tween(300),
@@ -80,7 +80,7 @@ fun <T> PillToggle(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .onSizeChanged { totalWidth.value = it.width }
+                .onSizeChanged { totalWidth.intValue = it.width }
                 .padding(vertical = 2.dp, horizontal = 3.dp)
         ) {
             options.forEach { option ->

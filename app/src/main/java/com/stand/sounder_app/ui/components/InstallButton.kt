@@ -20,7 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -66,7 +66,7 @@ fun InstallButton(
 
     // installState: 0=空闲, 1=下载中/暂停, 2=已安装
     var installState by remember(isInstalled, status, resumable) {
-        mutableStateOf(
+        mutableIntStateOf(
             when {
                 isInstalled && status != DownloadStatus.DOWNLOADING && status != DownloadStatus.PAUSED -> 2
                 status == DownloadStatus.DOWNLOADING || status == DownloadStatus.PAUSED -> 1

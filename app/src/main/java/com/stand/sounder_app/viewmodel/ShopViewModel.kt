@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.stand.sounder_app.MyApp
+import com.stand.sounder_app.R
 import com.stand.sounder_app.data.download.DownloadState
 import com.stand.sounder_app.data.model.RemoteResource
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +21,8 @@ data class ShopUiState(
     val pendingIds: Set<String> = emptySet(),
     val downloadStates: Map<String, DownloadState> = emptyMap(),
     val isLoading: Boolean = false,
+    /** 下拉刷新专用标志，与 isLoading 解耦，避免初始骨架屏切回的问题 */
+    val isRefreshing: Boolean = false,
     val isLoadingMore: Boolean = false,
     val hasMore: Boolean = true,
     val error: String? = null
@@ -70,7 +73,12 @@ class ShopViewModel : ViewModel() {
 
     fun loadResources() {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true, error = null)
+            val isRefresh = _uiState.value.resources.isNotEmpty()
+            _uiState.value = _uiState.value.copy(
+                isLoading = true,
+                isRefreshing = isRefresh,
+                error = null
+            )
             currentPage = 1
 
             val result = repository.getRemoteResourceList(currentPage, pageSize)
@@ -83,6 +91,7 @@ class ShopViewModel : ViewModel() {
                     _uiState.value = _uiState.value.copy(
                         resources = list,
                         isLoading = false,
+                        isRefreshing = false,
                         hasMore = list.size >= pageSize,
                         downloadStates = seededStates
                     )
@@ -92,7 +101,8 @@ class ShopViewModel : ViewModel() {
                 onFailure = { error ->
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
-                        error = error.message ?: "加载失败"
+                        isRefreshing = false,
+                        error = error.message ?: MyApp.instance.getString(R.string.load_failed)
                     )
                 }
             )
@@ -142,7 +152,7 @@ class ShopViewModel : ViewModel() {
                     currentPage--
                     _uiState.value = _uiState.value.copy(
                         isLoadingMore = false,
-                        error = error.message ?: "加载失败"
+                        error = error.message ?: MyApp.instance.getString(R.string.load_failed)
                     )
                 }
             )

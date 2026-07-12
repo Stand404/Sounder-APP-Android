@@ -1,5 +1,7 @@
 package com.stand.sounder_app.util
 
+import android.annotation.SuppressLint
+
 /** 将毫秒转换为可读时长格式 */
 fun formatDuration(millis: Long): String {
     if (millis <= 0) return "0.0s"
@@ -8,6 +10,15 @@ fun formatDuration(millis: Long): String {
     val seconds = totalSeconds % 60
     return if (minutes > 0) "$minutes:${seconds.toString().padStart(2, '0')}"
     else "${millis / 1000}.${(millis % 1000) / 100}s"
+}
+
+/**
+ * 将毫秒时长格式化为 "x.x秒" 形式（保留一位小数）。
+ */
+@SuppressLint("DefaultLocale")
+fun formatAudioDuration(millis: Long): String {
+    val seconds = millis / 1000.0
+    return String.format("%.1fs", seconds)
 }
 
 /** 将字节数转换为可读大小格式 */

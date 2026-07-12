@@ -1,7 +1,6 @@
 package com.stand.sounder_app
 
 import android.app.Application
-import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import com.stand.sounder_app.audio.AudioPlayerManager

@@ -171,6 +171,8 @@
     <string name="shortcut_requested">Put「%1$s」on your desktop, then poke it to play♪</string>
     <string name="shortcut_sent">The add-to-desktop request has been sent. If it doesn\'t show up, allow「Desktop shortcut」in your launcher settings♪</string>
     <string name="shortcut_try_anyway">Try anyway, meow~</string>
+    <string name="shortcut_resource_deleted">Resource not found, may have been deleted</string>
+    <string name="shortcut_no_audio">This resource has no playable audio yet</string>
 
     <!-- New resource defaults -->
     <string name="new_resource_name">New Resource Pack</string>

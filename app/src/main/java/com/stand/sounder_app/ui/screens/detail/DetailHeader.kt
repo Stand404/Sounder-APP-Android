@@ -57,7 +57,6 @@ fun DetailHeader(
     description: String,
     size: String?,
     publishDate: String?,
-    isInstalled: Boolean,
     modifier: Modifier = Modifier
 ) {
     // 参考 Win 版本 DetailContent: Background=Lv2Bg, Padding=16,20
