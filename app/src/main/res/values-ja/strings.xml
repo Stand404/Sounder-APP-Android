@@ -1,0 +1,196 @@
+<resources>
+    <!-- アプリ情報 -->
+    <string name="app_name">発声APP</string>
+
+    <!-- タブ名 -->
+    <string name="tab_personal">マイリソース</string>
+    <string name="tab_shop">ストア</string>
+    <string name="tab_settings">設定</string>
+
+    <!-- 個人リソースページ -->
+    <string name="no_resources_yet">ここはまだ空っぽだにゃ</string>
+    <string name="go_shop_to_install">ストアでリソースをお家に迎えに行きましょにゃ♪</string>
+    <string name="view_detail">詳細を見る</string>
+    <string name="edit_resource">リソースを編集</string>
+    <string name="clone_resource">リソースを複製</string>
+    <string name="export_package">パッケージをエクスポート</string>
+    <string name="add_to_desktop">デスクトップに追加</string>
+    <string name="delete">削除</string>
+    <string name="confirm_delete_title">削除の確認</string>
+    <string name="confirm_delete_message">このリソースを削除してもいいにゃ？戻せなくなっちゃうよ〜</string>
+    <string name="search_hint">リソースを検索…</string>
+    <string name="add_resource_desc">リソースを追加</string>
+    <string name="no_match">お探しのリソースが見つからないにゃ</string>
+    <string name="go_to_shop">ストアへ</string>
+    <string name="create_new_resource">新規リソースを作成</string>
+    <string name="import_package">パッケージをインポート</string>
+
+    <!-- ストアページ -->
+    <string name="search">検索</string>
+    <string name="install">インストール</string>
+    <string name="installed">インストール済み</string>
+    <string name="load_more">さらに読み込む</string>
+    <string name="no_more_data">もうおしまいだにゃ</string>
+    <string name="load_failed">読み込みに失敗したにゃ、もう一度ちょんと押してみて</string>
+    <string name="retry">再試行</string>
+    <string name="shop_empty">お店の棚がまだ空っぽだにゃ</string>
+
+    <!-- 詳細ページ -->
+    <string name="back">戻る</string>
+    <string name="online_preview">オンラインプレビュー</string>
+    <string name="no_audio_in_package">このパッケージはまだ静かで、音声がないにゃ</string>
+    <string name="normal_mode">ノーマル</string>
+    <string name="interrupt_mode">割り込み</string>
+    <string name="play_mode_label">再生モード</string>
+    <string name="overlay_desc">音声が互いに干渉せずに再生されます</string>
+    <string name="replace_desc">新しい再生が前のを中断します</string>
+    <string name="loop_desc">ずっと再生し続けて止まりません</string>
+    <string name="overlay_mode">重ねる</string>
+    <string name="replace_mode">置き換え</string>
+    <string name="loop_mode">リピート</string>
+    <string name="loop_type_label">リピートタイプ</string>
+    <string name="loop_type_desc">単曲リピート / リスト順次再生</string>
+    <string name="loop_single">単曲</string>
+    <string name="loop_list">リスト</string>
+    <string name="play_order_label">再生順序</string>
+    <string name="order_desc">この設定はホームグリッドのクリックに適用されます</string>
+    <string name="order_play">順序</string>
+    <string name="random_play">ランダム</string>
+    <string name="stop_playback">再生を停止</string>
+    <string name="more_actions">その他の操作</string>
+    <string name="resource_not_found">このリソースが見つからないにゃ</string>
+
+    <!-- 編集ページ -->
+    <string name="cancel">キャンセル</string>
+
+    <!-- 設定ページ -->
+    <string name="language_setting">言語設定</string>
+    <string name="language_system">システムに従う</string>
+    <string name="language_zh">简体中文</string>
+    <string name="language_zh_tw">繁體中文</string>
+    <string name="language_en">English</string>
+    <string name="language_ja">日本語</string>
+    <string name="language_ru">Русский</string>
+    <string name="author_name">作者</string>
+    <string name="theme_mode">テーマモード</string>
+    <string name="auto_theme">自動</string>
+    <string name="light">ライト</string>
+    <string name="dark">ダーク</string>
+    <string name="cache_cleanup">キャッシュの消去</string>
+    <string name="enter_official_site">公式サイトへ</string>
+    <string name="get_fan_group">ファングループ</string>
+    <string name="about_title">このアプリについて</string>
+    <string name="app_name_display">発声APP</string>
+    <string name="badge_android">Android</string>
+    <string name="app_description">独立したAPPの総称で、Androidのみ対応しています。</string>
+    <string name="app_name_zaohua">発声APP · 造化版</string>
+    <string name="badge_multi_platform">マルチプラットフォーム</string>
+    <string name="app_full_description">リソースパックの閲覧、検索、ダウンロード、作成、編集、インポート/エクスポート、各種オーディオリソースの再生に対応。Windows、macOS、Linux、Android、iOSに対応。</string>
+    <string name="independent_package">独立APP統合パック</string>
+    <string name="independent_desc">すべての独立APPの詰め合わせ、まとめてダウンロードしたいときにぴったり</string>
+    <string name="audio_files">音声ファイルの取得</string>
+    <string name="audio_files_desc">すべてのリソースで使う音声ファイルは、インターネットから取得したものです</string>
+    <string name="privacy_notice">本アプリはお客様の個人情報を一切収集しません。すべての個人データはお客様のデバイス内にのみ保存され、いかなるサーバーにもアップロードされません。</string>
+    <string name="feedback_notice">問題やバグに遭遇したら、公式サイト、Douyin、Bilibili、ファングループなどから作者にフィードバックできるにゃ♪</string>
+    <string name="clear_cache_confirm_title">キャッシュを消去</string>
+    <string name="clear_cache_confirm_msg">すべてのキャッシュ（画像と試聴音声）を消去してもいいにゃ？これは取り消せないよ♪</string>
+    <string name="clear">消去</string>
+
+    <!-- 投稿ページ -->
+    <string name="status_in_progress">進行中</string>
+    <string name="status_pending">保留中</string>
+    <string name="status_completed">完了</string>
+    <string name="no_submissions">まだ誰も投稿してないにゃ</string>
+    <string name="submissions_header_title">投稿と計画</string>
+    <string name="submissions_header_desc">発声APPに投稿して、公開の進捗を追跡</string>
+    <string name="submissions_new_btn">投稿する</string>
+    <string name="submission_search_placeholder">投稿を検索…</string>
+    <string name="submission_no_schedule">未スケジュール</string>
+    <string name="submission_link_copied">リンクをコピーしました</string>
+
+    <!-- 投稿フォームページ -->
+    <string name="submission_form_submit">投稿を送信</string>
+    <string name="submission_form_info_tip">投稿前に他の人の形式を参考にして、情報をしっかり埋めてにゃ~わからない時は公式サイトでStandに連絡してね♪</string>
+    <string name="submission_form_resource_name">リソースパック名</string>
+    <string name="submission_form_resource_name_placeholder">例：ググガガ、シャオタオゲイム</string>
+    <string name="submission_form_app_name">APP略称</string>
+    <string name="submission_form_app_name_placeholder">5文字以内、例：ググガガ、ゲイム</string>
+    <string name="submission_form_brief">概要</string>
+    <string name="submission_form_brief_placeholder">この音声を最も表す一言</string>
+    <string name="submission_form_platform">プラットフォーム</string>
+    <string name="submission_form_platform_id">プラットフォームアカウント</string>
+    <string name="submission_form_platform_id_placeholder">連絡用、未記入だとご連絡できません</string>
+    <string name="submission_form_nickname">ニックネーム</string>
+    <string name="submission_form_nickname_placeholder">どのようにお呼びすれば？</string>
+    <string name="submission_form_source_section">出典情報</string>
+    <string name="submission_form_image_source">画像出典</string>
+    <string name="submission_form_image_source_link">画像出典リンク</string>
+    <string name="submission_form_image_source_link_placeholder">画像の出典リンクを記入（自作の場合は空欄可）</string>
+    <string name="submission_form_voice_source">音声出典</string>
+    <string name="submission_form_voice_source_link">音声出典リンク</string>
+    <string name="submission_form_voice_source_link_placeholder">音声の出典リンクを記入（自作の場合は空欄可）</string>
+    <string name="submission_form_notes">備考</string>
+    <string name="submission_form_notes_placeholder">使用条件や完成済み素材のクラウドリンクを記入</string>
+    <string name="submission_form_notes_hint">備考が未記入の場合、画像出典リンクと音声出典リンクは必須です。</string>
+    <string name="submission_form_selected">選択中：%1$s</string>
+
+    <!-- タスク管理ページ -->
+    <string name="task_manager">タスク管理</string>
+    <string name="no_tasks">再生中のタスクはないよ</string>
+    <string name="task_count">%1$d 個の進行中の再生タスク</string>
+
+    <!-- 検索ページ -->
+    <string name="search_placeholder">リソースを検索…</string>
+    <string name="no_search_results">探し回ってもお目当てが見つからないにゃ</string>
+
+    <!-- コンポーネント -->
+    <string name="resumable">再開可能</string>
+    <string name="search_history">検索履歴</string>
+    <string name="clear_text">クリア</string>
+    <string name="copy_link">リンクをコピー</string>
+    <string name="stop_all">すべて停止</string>
+    <string name="unnamed_submission">無名の投稿</string>
+    <string name="unnamed_resource">無名のリソース</string>
+    <string name="search_task_hint">タスクを検索…</string>
+    <string name="task_management_desc">デスクトップからちょんと押した再生タスクが、ここに並ぶにゃ~</string>
+    <string name="no_matching_tasks">探しているタスクがないにゃ</string>
+    <string name="try_different_keywords">にゃんな言葉に変えてもう一度探してみてにゃ~</string>
+    <string name="task_instance_count">%1$d インスタンス</string>
+    <string name="now_playing">再生中: %1$s</string>
+
+    <!-- リマインドメッセージ（ViewModel toast 用） -->
+    <string name="deleted_files">%1$d 個のファイルを削除して、%2$s を解放したにゃ♪</string>
+    <string name="resource_not_found_clone">このリソースが見つからないから、複製できないにゃ</string>
+    <string name="cloned_as">「%1$s」を複製したにゃ♪</string>
+    <string name="resource_not_found_export">このリソースが見つからないから、エクスポートできないにゃ</string>
+    <string name="export_failed">エクスポートがうまくいかなかったにゃ、もう一度試してみて</string>
+    <string name="import_success">インポートできたにゃ、やったね♪</string>
+    <string name="import_failed">インポートがうまくいかなかったにゃ：%1$s</string>
+    <string name="unknown_error">未知の小さな問題が起きたにゃ</string>
+    <string name="created">「%1$s」を作成したにゃ♪</string>
+    <string name="shortcut_requested">「%1$s」をデスクトップに追加したにゃ、あとはちょんと押せば再生できるよ♪</string>
+    <string name="shortcut_sent">デスクトップ追加のお願いを送ったにゃ。出てこない時は、ランチャー設定で「デスクトップショートカット」を許可してね♪</string>
+    <string name="shortcut_try_anyway">それでもにゃって試す</string>
+
+    <!-- 新規リソースの初期値 -->
+    <string name="new_resource_name">新規リソースパック</string>
+    <string name="new_resource_desc">面白いリソースパック</string>
+
+    <!-- 相対日付 -->
+    <string name="date_today">今日</string>
+    <string name="date_yesterday">昨日</string>
+    <string name="date_day_before_yesterday">一昨日</string>
+    <string name="date_tomorrow">明日</string>
+    <string name="date_day_after_tomorrow">明後日</string>
+    <string name="date_days_after">%d日後</string>
+    <string name="date_days_before">%d日前</string>
+    <string name="shortcut_permission_title">デスクトップショートカット</string>
+    <string name="go_to_settings">設定へ</string>
+    <string name="shortcut_tutorial_steps">1. 「設定へ」をタップして本アプリの設定ページを開く\n2. 「権限管理」を見つける\n3. 「デスクトップショートカット」を許可\n4. アプリに戻り、再度「デスクトップに追加」をタップ</string>
+    <string name="shortcut_steps_intro">手順どおりに一つずつ権限を開ければ、使えるようになるにゃ~</string>
+    <string name="shortcut_guide_xiaomi">親愛なる Xiaomi / Redmi ユーザー</string>
+    <string name="shortcut_guide_huawei">親愛なる Huawei / Honor ユーザー</string>
+    <string name="shortcut_guide_oppo">親愛なる OPPO ユーザー</string>
+    <string name="shortcut_guide_vivo">親愛なる vivo ユーザー</string>
+    <string name="shortcut_guide_other">親愛なるユーザー</string>
+</resources>

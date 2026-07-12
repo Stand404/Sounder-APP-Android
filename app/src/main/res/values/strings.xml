@@ -1,0 +1,196 @@
+<resources>
+    <!-- 应用信息 -->
+    <string name="app_name">发声APP</string>
+
+    <!-- Tab 名称 -->
+    <string name="tab_personal">个人资源</string>
+    <string name="tab_shop">商店</string>
+    <string name="tab_settings">设置</string>
+
+    <!-- 个人资源页 -->
+    <string name="no_resources_yet">这里还空空的</string>
+    <string name="go_shop_to_install">去商店里把资源领回家吧喵♪</string>
+    <string name="view_detail">查看详情</string>
+    <string name="edit_resource">编辑资源</string>
+    <string name="clone_resource">克隆资源</string>
+    <string name="export_package">导出资源包</string>
+    <string name="add_to_desktop">添加到桌面</string>
+    <string name="delete">删除</string>
+    <string name="confirm_delete_title">确认删除</string>
+    <string name="confirm_delete_message">确定要删掉这个资源嘛？删了可就回不来啦~</string>
+    <string name="search_hint">搜索资源...</string>
+    <string name="add_resource_desc">添加资源</string>
+    <string name="no_match">没有找到想要的资源呢</string>
+    <string name="go_to_shop">前往商店</string>
+    <string name="create_new_resource">创建新资源</string>
+    <string name="import_package">导入资源包</string>
+
+    <!-- 商店页 -->
+    <string name="search">搜索</string>
+    <string name="install">安装</string>
+    <string name="installed">已安装</string>
+    <string name="load_more">加载更多</string>
+    <string name="no_more_data">已经到底啦</string>
+    <string name="load_failed">加载失败了，再戳一下试试看好不好</string>
+    <string name="retry">重试</string>
+    <string name="shop_empty">商店的小货架还空空的呢</string>
+
+    <!-- 详情页 -->
+    <string name="back">返回</string>
+    <string name="online_preview">在线试听</string>
+    <string name="no_audio_in_package">这个资源包里还静悄悄的，没有声音呢</string>
+    <string name="normal_mode">正常</string>
+    <string name="interrupt_mode">打断</string>
+    <string name="play_mode_label">播放模式</string>
+    <string name="overlay_desc">声音播放互不干扰</string>
+    <string name="replace_desc">新播放会打断前一个</string>
+    <string name="loop_desc">一直播放永不停止</string>
+    <string name="overlay_mode">叠加</string>
+    <string name="replace_mode">替换</string>
+    <string name="loop_mode">循环</string>
+    <string name="loop_type_label">循环类型</string>
+    <string name="loop_type_desc">单曲反复播放 / 列表轮流播放</string>
+    <string name="loop_single">单曲</string>
+    <string name="loop_list">列表</string>
+    <string name="play_order_label">播放顺序</string>
+    <string name="order_desc">此设置用于主页格子点击</string>
+    <string name="order_play">顺序</string>
+    <string name="random_play">随机</string>
+    <string name="stop_playback">停止播放</string>
+    <string name="more_actions">更多操作</string>
+    <string name="resource_not_found">没找到这个资源呢</string>
+
+    <!-- 编辑页 -->
+    <string name="cancel">取消</string>
+
+    <!-- 设置页 -->
+    <string name="language_setting">语言设置</string>
+    <string name="language_system">跟随系统</string>
+    <string name="language_zh">简体中文</string>
+    <string name="language_zh_tw">繁體中文</string>
+    <string name="language_en">English</string>
+    <string name="language_ja">日本語</string>
+    <string name="language_ru">Русский</string>
+    <string name="author_name">作者</string>
+    <string name="theme_mode">主题模式</string>
+    <string name="auto_theme">自动</string>
+    <string name="light">浅色</string>
+    <string name="dark">深色</string>
+    <string name="cache_cleanup">缓存清理</string>
+    <string name="enter_official_site">进入官网</string>
+    <string name="get_fan_group">获取粉丝群</string>
+    <string name="about_title">关于</string>
+    <string name="app_name_display">发声APP</string>
+    <string name="badge_android">Android</string>
+    <string name="app_description">一类独立APP的统称，只支持Android系统。</string>
+    <string name="app_name_zaohua">发声APP · 造化版</string>
+    <string name="badge_multi_platform">多平台支持</string>
+    <string name="app_full_description">可以浏览、搜索、下载、创建、编辑、导入导出各种资源包，以及播放各类音频资源，同时支持 Windows、macOS、Linux、Android、iOS。</string>
+    <string name="independent_package">独立APP整合包</string>
+    <string name="independent_desc">所有独立APP的合集，适合批量下载的需要</string>
+    <string name="audio_files">纯音频文件获取</string>
+    <string name="audio_files_desc">所有资源用到的音频文件，来源于互联网</string>
+    <string name="privacy_notice">本应用不会收集您的任何个人信息。所有个人数据仅存储在您的设备本地，不会上传至任何服务器。</string>
+    <string name="feedback_notice">如果遇到问题或者bug，可以通过官网、抖音、B站、粉丝群等渠道找作者反馈喵♪</string>
+    <string name="clear_cache_confirm_title">清理缓存</string>
+    <string name="clear_cache_confirm_msg">确定要清理所有缓存（图片与试听音频）吗？这个可没法反悔哦♪</string>
+    <string name="clear">清理</string>
+
+    <!-- 投稿页 -->
+    <string name="status_in_progress">进行中</string>
+    <string name="status_pending">待排表</string>
+    <string name="status_completed">已完成</string>
+    <string name="no_submissions">还没有用户来投稿呢</string>
+    <string name="submissions_header_title">投稿与计划</string>
+    <string name="submissions_header_desc">投稿发声APP，跟踪上架进度</string>
+    <string name="submissions_new_btn">我要投稿</string>
+    <string name="submission_search_placeholder">搜索投稿...</string>
+    <string name="submission_no_schedule">未排期</string>
+    <string name="submission_link_copied">已复制链接</string>
+
+    <!-- 投稿表单页 -->
+    <string name="submission_form_submit">提交投稿</string>
+    <string name="submission_form_info_tip">投稿前可以先瞄瞄别人的格式，把信息填得满满的喵~有疑问就通过官网找Stand哦♪</string>
+    <string name="submission_form_resource_name">资源包全称</string>
+    <string name="submission_form_resource_name_placeholder">例如：咕咕嘎嘎、小桃给木</string>
+    <string name="submission_form_app_name">APP简称</string>
+    <string name="submission_form_app_name_placeholder">不超过5字，例如：咕咕嘎嘎、给木</string>
+    <string name="submission_form_brief">简述</string>
+    <string name="submission_form_brief_placeholder">最能代表该声音的一句话</string>
+    <string name="submission_form_platform">平台</string>
+    <string name="submission_form_platform_id">平台账号</string>
+    <string name="submission_form_platform_id_placeholder">有问题方便联系，不填则无法联系到您</string>
+    <string name="submission_form_nickname">昵称</string>
+    <string name="submission_form_nickname_placeholder">我们怎么称呼您</string>
+    <string name="submission_form_source_section">来源信息</string>
+    <string name="submission_form_image_source">图片来源</string>
+    <string name="submission_form_image_source_link">图片来源链接</string>
+    <string name="submission_form_image_source_link_placeholder">提供图片出处链接（自己截取无需填）</string>
+    <string name="submission_form_voice_source">声音来源</string>
+    <string name="submission_form_voice_source_link">声音来源链接</string>
+    <string name="submission_form_voice_source_link_placeholder">提供声音出处链接（自己录制无需填）</string>
+    <string name="submission_form_notes">备注</string>
+    <string name="submission_form_notes_placeholder">填写使用要求或提供已做好的素材网盘链接</string>
+    <string name="submission_form_notes_hint">未填写备注时，图片来源链接与声音来源链接为必填项。</string>
+    <string name="submission_form_selected">已选择：%1$s</string>
+
+    <!-- 任务管理页 -->
+    <string name="task_manager">任务管理</string>
+    <string name="no_tasks">没有在播的任务哦</string>
+    <string name="task_count">%1$d 个进行中的播放任务</string>
+
+    <!-- 搜索页 -->
+    <string name="search_placeholder">搜索资源...</string>
+    <string name="no_search_results">翻遍了也没找到想要的呢</string>
+
+    <!-- 组件 -->
+    <string name="resumable">可继续</string>
+    <string name="search_history">搜索历史</string>
+    <string name="clear_text">清空</string>
+    <string name="copy_link">复制链接</string>
+    <string name="stop_all">停止全部</string>
+    <string name="unnamed_submission">未命名投稿</string>
+    <string name="unnamed_resource">未命名资源</string>
+    <string name="search_task_hint">搜索任务...</string>
+    <string name="task_management_desc">从桌面戳一下的播放任务，都会乖乖列在这里喵~</string>
+    <string name="no_matching_tasks">没有想找的任务呢</string>
+    <string name="try_different_keywords">换个喵喵词再找找看好不好呀~</string>
+    <string name="task_instance_count">%1$d 实例</string>
+    <string name="now_playing">正在播放: %1$s</string>
+
+    <!-- 提醒消息（ViewModel toast 用） -->
+    <string name="deleted_files">已经删掉 %1$d 个文件，腾出 %2$s 啦♪</string>
+    <string name="resource_not_found_clone">这个资源找不到，没法克隆它呢</string>
+    <string name="cloned_as">已经克隆出「%1$s」啦♪</string>
+    <string name="resource_not_found_export">这个资源找不到，没法导出它呢</string>
+    <string name="export_failed">导出没有成功呢，再试试看好不好</string>
+    <string name="import_success">导入成功啦，真棒♪</string>
+    <string name="import_failed">导入没有成功呢：%1$s</string>
+    <string name="unknown_error">出现了一个未知的小问题</string>
+    <string name="created">已经创建好「%1$s」啦♪</string>
+    <string name="shortcut_requested">已经把「%1$s」放到桌面啦，之后戳一下就能播哦♪</string>
+    <string name="shortcut_sent">添加桌面的请求已经送出去啦，要是没冒出来，就去启动器设置里给「桌面快捷方式」开个绿灯哦♪</string>
+    <string name="shortcut_try_anyway">偏要试试喵~</string>
+
+    <!-- 新资源默认值 -->
+    <string name="new_resource_name">新建资源包</string>
+    <string name="new_resource_desc">一个有趣的资源包</string>
+
+    <!-- 相对日期 -->
+    <string name="date_today">今天</string>
+    <string name="date_yesterday">昨天</string>
+    <string name="date_day_before_yesterday">前天</string>
+    <string name="date_tomorrow">明天</string>
+    <string name="date_day_after_tomorrow">后天</string>
+    <string name="date_days_after">%d天后</string>
+    <string name="date_days_before">%d天前</string>
+    <string name="shortcut_permission_title">桌面快捷方式</string>
+    <string name="go_to_settings">去设置</string>
+    <string name="shortcut_tutorial_steps">1. 点击「去设置」打开本应用设置页\n2. 找到「权限管理」\n3. 允许「桌面快捷方式」\n4. 返回本应用，再次点击「添加到桌面」</string>
+    <string name="shortcut_steps_intro">跟着步骤一步步把权限打开，就能用啦喵~</string>
+    <string name="shortcut_guide_xiaomi">亲爱的小米 / 红米用户</string>
+    <string name="shortcut_guide_huawei">亲爱的华为 / 荣耀用户</string>
+    <string name="shortcut_guide_oppo">亲爱的 OPPO 用户</string>
+    <string name="shortcut_guide_vivo">亲爱的 vivo 用户</string>
+    <string name="shortcut_guide_other">亲爱的用户</string>
+</resources>

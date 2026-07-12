@@ -1,0 +1,196 @@
+<resources>
+    <!-- App info -->
+    <string name="app_name">Sounder</string>
+
+    <!-- Tab names -->
+    <string name="tab_personal">My Resources</string>
+    <string name="tab_shop">Shop</string>
+    <string name="tab_settings">Settings</string>
+
+    <!-- Personal resources page -->
+    <string name="no_resources_yet">It\'s all empty here</string>
+    <string name="go_shop_to_install">Go to the shop and bring resources home, meow♪</string>
+    <string name="view_detail">View Details</string>
+    <string name="edit_resource">Edit Resource</string>
+    <string name="clone_resource">Clone Resource</string>
+    <string name="export_package">Export Package</string>
+    <string name="add_to_desktop">Add to Desktop</string>
+    <string name="delete">Delete</string>
+    <string name="confirm_delete_title">Confirm Delete</string>
+    <string name="confirm_delete_message">Are you sure you want to delete this resource? No takesies backsies, meow~</string>
+    <string name="search_hint">Search resources…</string>
+    <string name="add_resource_desc">Add resource</string>
+    <string name="no_match">Couldn\'t find the resource you\'re looking for</string>
+    <string name="go_to_shop">Go to Shop</string>
+    <string name="create_new_resource">Create New Resource</string>
+    <string name="import_package">Import Package</string>
+
+    <!-- Shop page -->
+    <string name="search">Search</string>
+    <string name="install">Install</string>
+    <string name="installed">Installed</string>
+    <string name="load_more">Load More</string>
+    <string name="no_more_data">That\'s the end</string>
+    <string name="load_failed">Loading failed, give it another poke and try again?</string>
+    <string name="retry">Retry</string>
+    <string name="shop_empty">The shop\'s little shelf is still empty</string>
+
+    <!-- Detail page -->
+    <string name="back">Back</string>
+    <string name="online_preview">Online Preview</string>
+    <string name="no_audio_in_package">This package is all quiet, no audio inside</string>
+    <string name="normal_mode">Normal</string>
+    <string name="interrupt_mode">Interrupt</string>
+    <string name="play_mode_label">Play Mode</string>
+    <string name="overlay_desc">Sounds play without interfering with each other</string>
+    <string name="replace_desc">A new sound interrupts the previous one</string>
+    <string name="loop_desc">Keeps playing and never stops</string>
+    <string name="overlay_mode">Overlay</string>
+    <string name="replace_mode">Replace</string>
+    <string name="loop_mode">Loop</string>
+    <string name="loop_type_label">Loop Type</string>
+    <string name="loop_type_desc">Single track repeat / List playback in turn</string>
+    <string name="loop_single">Single</string>
+    <string name="loop_list">List</string>
+    <string name="play_order_label">Play Order</string>
+    <string name="order_desc">This setting applies to home grid clicks</string>
+    <string name="order_play">Order</string>
+    <string name="random_play">Random</string>
+    <string name="stop_playback">Stop Playback</string>
+    <string name="more_actions">More actions</string>
+    <string name="resource_not_found">Couldn\'t find this resource</string>
+
+    <!-- Edit page -->
+    <string name="cancel">Cancel</string>
+
+    <!-- Settings page -->
+    <string name="language_setting">Language</string>
+    <string name="language_system">System</string>
+    <string name="language_zh">简体中文</string>
+    <string name="language_zh_tw">繁體中文</string>
+    <string name="language_en">English</string>
+    <string name="language_ja">日本語</string>
+    <string name="language_ru">Русский</string>
+    <string name="author_name">Author</string>
+    <string name="theme_mode">Theme Mode</string>
+    <string name="auto_theme">Auto</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="cache_cleanup">Cache Cleanup</string>
+    <string name="enter_official_site">Visit Website</string>
+    <string name="get_fan_group">Fan Group</string>
+    <string name="about_title">About</string>
+    <string name="app_name_display">Sounder APP</string>
+    <string name="badge_android">Android</string>
+    <string name="app_description">A general term for standalone apps, Android only.</string>
+    <string name="app_name_zaohua">Sounder APP · Evolution</string>
+    <string name="badge_multi_platform">Multi-platform</string>
+    <string name="app_full_description">Browse, search, download, create, edit, import and export various resource packages, and play all kinds of audio resources. Supports Windows, macOS, Linux, Android, iOS.</string>
+    <string name="independent_package">Standalone App Bundle</string>
+    <string name="independent_desc">A collection of all standalone apps, perfect for batch downloads</string>
+    <string name="audio_files">Audio Files</string>
+    <string name="audio_files_desc">All audio files used by resources, sourced from the internet</string>
+    <string name="privacy_notice">This app does not collect any of your personal information. All personal data is stored locally on your device and is never uploaded to any server.</string>
+    <string name="feedback_notice">If you run into problems or bugs, you can reach the author via the official website, Douyin, Bilibili, or the fan group, meow♪</string>
+    <string name="clear_cache_confirm_title">Clear Cache</string>
+    <string name="clear_cache_confirm_msg">Are you sure you want to clear all cache (images and preview audio)? There\'s no going back♪</string>
+    <string name="clear">Clear</string>
+
+    <!-- Submissions page -->
+    <string name="status_in_progress">In Progress</string>
+    <string name="status_pending">Pending</string>
+    <string name="status_completed">Completed</string>
+    <string name="no_submissions">No one has submitted anything yet</string>
+    <string name="submissions_header_title">Submissions &amp; Plans</string>
+    <string name="submissions_header_desc">Submit to Sounder APP and track the release progress</string>
+    <string name="submissions_new_btn">Submit Now</string>
+    <string name="submission_search_placeholder">Search submissions…</string>
+    <string name="submission_no_schedule">Unscheduled</string>
+    <string name="submission_link_copied">Link copied</string>
+
+    <!-- Submission form page -->
+    <string name="submission_form_submit">Submit</string>
+    <string name="submission_form_info_tip">Peek at others\' formats first and fill everything in nicely, meow~ Reach Stand via the official site if you\'re unsure♪</string>
+    <string name="submission_form_resource_name">Resource Full Name</string>
+    <string name="submission_form_resource_name_placeholder">e.g. Gugu Gaga, Xiaotao Geimu</string>
+    <string name="submission_form_app_name">App Short Name</string>
+    <string name="submission_form_app_name_placeholder">Max 5 chars, e.g. Gugu Gaga, Geimu</string>
+    <string name="submission_form_brief">Brief</string>
+    <string name="submission_form_brief_placeholder">One sentence that best represents this voice</string>
+    <string name="submission_form_platform">Platform</string>
+    <string name="submission_form_platform_id">Platform Account</string>
+    <string name="submission_form_platform_id_placeholder">For contact if needed; leave blank and we can\'t reach you</string>
+    <string name="submission_form_nickname">Nickname</string>
+    <string name="submission_form_nickname_placeholder">How should we address you?</string>
+    <string name="submission_form_source_section">Source Info</string>
+    <string name="submission_form_image_source">Image Source</string>
+    <string name="submission_form_image_source_link">Image Source Link</string>
+    <string name="submission_form_image_source_link_placeholder">Provide image source link (leave blank if self-captured)</string>
+    <string name="submission_form_voice_source">Voice Source</string>
+    <string name="submission_form_voice_source_link">Voice Source Link</string>
+    <string name="submission_form_voice_source_link_placeholder">Provide voice source link (leave blank if self-recorded)</string>
+    <string name="submission_form_notes">Notes</string>
+    <string name="submission_form_notes_placeholder">Usage requirements or a cloud drive link to prepared materials</string>
+    <string name="submission_form_notes_hint">When notes are blank, image source link and voice source link are required.</string>
+    <string name="submission_form_selected">Selected: %1$s</string>
+
+    <!-- Task manager page -->
+    <string name="task_manager">Task Manager</string>
+    <string name="no_tasks">No active tasks playing</string>
+    <string name="task_count">%1$d active playback tasks</string>
+
+    <!-- Search page -->
+    <string name="search_placeholder">Search resources…</string>
+    <string name="no_search_results">Searched everywhere but found nothing</string>
+
+    <!-- Components -->
+    <string name="resumable">Resumable</string>
+    <string name="search_history">Search History</string>
+    <string name="clear_text">Clear</string>
+    <string name="copy_link">Copy Link</string>
+    <string name="stop_all">Stop All</string>
+    <string name="unnamed_submission">Unnamed Submission</string>
+    <string name="unnamed_resource">Unnamed Resource</string>
+    <string name="search_task_hint">Search tasks…</string>
+    <string name="task_management_desc">Playback tasks you poke from the desktop are all lined up here, meow~</string>
+    <string name="no_matching_tasks">No task matches what you\'re looking for</string>
+    <string name="try_different_keywords">Try a different meowy keyword, okay~</string>
+    <string name="task_instance_count">%1$d instances</string>
+    <string name="now_playing">Now Playing: %1$s</string>
+
+    <!-- Reminder messages (for ViewModel toasts) -->
+    <string name="deleted_files">Deleted %1$d files, freed up %2$s♪</string>
+    <string name="resource_not_found_clone">This resource is missing, can\'t clone it</string>
+    <string name="cloned_as">Cloned it as「%1$s」♪</string>
+    <string name="resource_not_found_export">This resource is missing, can\'t export it</string>
+    <string name="export_failed">Export didn\'t work, give it another try?</string>
+    <string name="import_success">Import succeeded, awesome♪</string>
+    <string name="import_failed">Import didn\'t work: %1$s</string>
+    <string name="unknown_error">A weird little problem popped up</string>
+    <string name="created">Created「%1$s」♪</string>
+    <string name="shortcut_requested">Put「%1$s」on your desktop, then poke it to play♪</string>
+    <string name="shortcut_sent">The add-to-desktop request has been sent. If it doesn\'t show up, allow「Desktop shortcut」in your launcher settings♪</string>
+    <string name="shortcut_try_anyway">Try anyway, meow~</string>
+
+    <!-- New resource defaults -->
+    <string name="new_resource_name">New Resource Pack</string>
+    <string name="new_resource_desc">A fun resource pack</string>
+
+    <!-- Relative dates -->
+    <string name="date_today">Today</string>
+    <string name="date_yesterday">Yesterday</string>
+    <string name="date_day_before_yesterday">Day before yesterday</string>
+    <string name="date_tomorrow">Tomorrow</string>
+    <string name="date_day_after_tomorrow">Day after tomorrow</string>
+    <string name="date_days_after">In %d days</string>
+    <string name="date_days_before">%d days ago</string>
+    <string name="shortcut_permission_title">Desktop shortcut</string>
+    <string name="go_to_settings">Go to Settings</string>
+    <string name="shortcut_tutorial_steps">1. Tap \"Go to Settings\" to open this app\'s settings page\n2. Find \"Permission management\"\n3. Allow \"Desktop shortcut\"\n4. Return to the app and tap \"Add to Desktop\" again</string>
+    <string name="shortcut_steps_intro">Follow the steps one by one to turn on the permission, then it works, meow~</string>
+    <string name="shortcut_guide_xiaomi">Dear Xiaomi / Redmi user</string>
+    <string name="shortcut_guide_huawei">Dear Huawei / Honor user</string>
+    <string name="shortcut_guide_oppo">Dear OPPO user</string>
+    <string name="shortcut_guide_vivo">Dear vivo user</string>
+    <string name="shortcut_guide_other">Dear user</string>
+</resources>

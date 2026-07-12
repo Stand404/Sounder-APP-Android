@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- 导出/打开文件夹时复制到外部 Download/Sounder 下的文件 -->
+    <external-files-path
+        name="exports"
+        path="Download/Sounder" />
+    <!-- 应用私有音频目录（克隆时备用） -->
+    <files-path
+        name="audio"
+        path="audio" />
+</paths>

@@ -1,0 +1,196 @@
+<resources>
+    <!-- Информация о приложении -->
+    <string name="app_name">Sounder</string>
+
+    <!-- Названия вкладок -->
+    <string name="tab_personal">Мои ресурсы</string>
+    <string name="tab_shop">Магазин</string>
+    <string name="tab_settings">Настройки</string>
+
+    <!-- Страница личных ресурсов -->
+    <string name="no_resources_yet">Здесь ничего нет</string>
+    <string name="go_shop_to_install">Идём в магазин и заберём ресурсы домой, мяу♪</string>
+    <string name="view_detail">Подробнее</string>
+    <string name="edit_resource">Редактировать ресурс</string>
+    <string name="clone_resource">Клонировать ресурс</string>
+    <string name="export_package">Экспорт пакета</string>
+    <string name="add_to_desktop">Добавить на рабочий стол</string>
+    <string name="delete">Удалить</string>
+    <string name="confirm_delete_title">Подтверждение удаления</string>
+    <string name="confirm_delete_message">Точно хочешь удалить этот ресурс? Назад дороги нет, мяу~</string>
+    <string name="search_hint">Поиск ресурсов…</string>
+    <string name="add_resource_desc">Добавить ресурс</string>
+    <string name="no_match">Не нашлось такого ресурса</string>
+    <string name="go_to_shop">Перейти в магазин</string>
+    <string name="create_new_resource">Создать новый ресурс</string>
+    <string name="import_package">Импорт пакета</string>
+
+    <!-- Страница магазина -->
+    <string name="search">Поиск</string>
+    <string name="install">Установить</string>
+    <string name="installed">Установлено</string>
+    <string name="load_more">Загрузить ещё</string>
+    <string name="no_more_data">Это всё</string>
+    <string name="load_failed">Загрузка не удалась, ткни ещё разок и попробуй снова?</string>
+    <string name="retry">Повторить</string>
+    <string name="shop_empty">Полочка магазина пока пустая</string>
+
+    <!-- Страница деталей -->
+    <string name="back">Назад</string>
+    <string name="online_preview">Предпросмотр</string>
+    <string name="no_audio_in_package">В этом пакете тихо-тихо, аудио нет</string>
+    <string name="normal_mode">Обычный</string>
+    <string name="interrupt_mode">Прерывание</string>
+    <string name="play_mode_label">Режим воспроизведения</string>
+    <string name="overlay_desc">Звуки воспроизводятся не мешая друг другу</string>
+    <string name="replace_desc">Новое воспроизведение прерывает предыдущее</string>
+    <string name="loop_desc">Играет всегда и никогда не останавливается</string>
+    <string name="overlay_mode">Наложение</string>
+    <string name="replace_mode">Замена</string>
+    <string name="loop_mode">Повтор</string>
+    <string name="loop_type_label">Тип повтора</string>
+    <string name="loop_type_desc">Повтор трека / Воспроизведение списка по очереди</string>
+    <string name="loop_single">Один</string>
+    <string name="loop_list">Список</string>
+    <string name="play_order_label">Порядок воспроизведения</string>
+    <string name="order_desc">Эта настройка применяется к кликам на главной</string>
+    <string name="order_play">По порядку</string>
+    <string name="random_play">Случайно</string>
+    <string name="stop_playback">Остановить</string>
+    <string name="more_actions">Другие действия</string>
+    <string name="resource_not_found">Не нашлось этого ресурса</string>
+
+    <!-- Страница редактирования -->
+    <string name="cancel">Отмена</string>
+
+    <!-- Страница настроек -->
+    <string name="language_setting">Язык</string>
+    <string name="language_system">Системный</string>
+    <string name="language_zh">简体中文</string>
+    <string name="language_zh_tw">繁體中文</string>
+    <string name="language_en">English</string>
+    <string name="language_ja">日本語</string>
+    <string name="language_ru">Русский</string>
+    <string name="author_name">Автор</string>
+    <string name="theme_mode">Режим темы</string>
+    <string name="auto_theme">Авто</string>
+    <string name="light">Светлая</string>
+    <string name="dark">Тёмная</string>
+    <string name="cache_cleanup">Очистка кэша</string>
+    <string name="enter_official_site">Перейти на сайт</string>
+    <string name="get_fan_group">Группа фанатов</string>
+    <string name="about_title">О приложении</string>
+    <string name="app_name_display">Sounder APP</string>
+    <string name="badge_android">Android</string>
+    <string name="app_description">Общее название для отдельных приложений, только Android.</string>
+    <string name="app_name_zaohua">Sounder APP · Эволюция</string>
+    <string name="badge_multi_platform">Мультиплатформа</string>
+    <string name="app_full_description">Просматривайте, ищите, скачивайте, создавайте, редактируйте, импортируйте и экспортируйте различные пакеты ресурсов, а также воспроизводите разные аудиоресурсы. Поддерживает Windows, macOS, Linux, Android, iOS.</string>
+    <string name="independent_package">Пакет отдельных приложений</string>
+    <string name="independent_desc">Сборник всех отдельных приложений, удобно для массовой загрузки</string>
+    <string name="audio_files">Аудиофайлы</string>
+    <string name="audio_files_desc">Все аудиофайлы, используемые ресурсами, взяты из интернета</string>
+    <string name="privacy_notice">Это приложение не собирает никакую вашу личную информацию. Все личные данные хранятся только локально на вашем устройстве и не загружаются на какие-либо серверы.</string>
+    <string name="feedback_notice">Если столкнёшься с проблемами или багами, можешь написать автору через официальный сайт, Douyin, Bilibili или группу фанатов, мяу♪</string>
+    <string name="clear_cache_confirm_title">Очистить кэш</string>
+    <string name="clear_cache_confirm_msg">Точно хочешь очистить весь кэш (изображения и аудио предпросмотра)? Отменить это уже не получится♪</string>
+    <string name="clear">Очистить</string>
+
+    <!-- Страница публикаций -->
+    <string name="status_in_progress">В процессе</string>
+    <string name="status_pending">В ожидании</string>
+    <string name="status_completed">Завершено</string>
+    <string name="no_submissions">Пока никто не прислал публикаций</string>
+    <string name="submissions_header_title">Публикации и планы</string>
+    <string name="submissions_header_desc">Публикуйте в Sounder APP и следите за статусом выхода</string>
+    <string name="submissions_new_btn">Опубликовать</string>
+    <string name="submission_search_placeholder">Поиск публикаций…</string>
+    <string name="submission_no_schedule">Без даты</string>
+    <string name="submission_link_copied">Ссылка скопирована</string>
+
+    <!-- Страница формы публикации -->
+    <string name="submission_form_submit">Отправить</string>
+    <string name="submission_form_info_tip">Сначала посмотри форматы других и заполни всё как надо, мяу~ Свяжись со Stand через официальный сайт, если что-то неясно♪</string>
+    <string name="submission_form_resource_name">Полное название ресурса</string>
+    <string name="submission_form_resource_name_placeholder">Например: ГугуГага, Сяотао Гейму</string>
+    <string name="submission_form_app_name">Краткое название APP</string>
+    <string name="submission_form_app_name_placeholder">Не более 5 симв., напр.: ГугуГага, Гейму</string>
+    <string name="submission_form_brief">Кратко</string>
+    <string name="submission_form_brief_placeholder">Одна фраза, лучше всего описывающая этот голос</string>
+    <string name="submission_form_platform">Платформа</string>
+    <string name="submission_form_platform_id">Аккаунт платформы</string>
+    <string name="submission_form_platform_id_placeholder">Для связи; если не указать, мы не сможем связаться с вами</string>
+    <string name="submission_form_nickname">Псевдоним</string>
+    <string name="submission_form_nickname_placeholder">Как к вам обращаться?</string>
+    <string name="submission_form_source_section">Информация об источнике</string>
+    <string name="submission_form_image_source">Источник изображений</string>
+    <string name="submission_form_image_source_link">Ссылка на источник изображений</string>
+    <string name="submission_form_image_source_link_placeholder">Укажите ссылку на источник (если скриншот свой — оставьте пустым)</string>
+    <string name="submission_form_voice_source">Источник звука</string>
+    <string name="submission_form_voice_source_link">Ссылка на источник звука</string>
+    <string name="submission_form_voice_source_link_placeholder">Укажите ссылку на источник (если запись своя — оставьте пустым)</string>
+    <string name="submission_form_notes">Примечания</string>
+    <string name="submission_form_notes_placeholder">Условия использования или ссылка на облачное хранилище с готовыми материалами</string>
+    <string name="submission_form_notes_hint">Если примечания пусты, ссылки на источники изображений и звука обязательны.</string>
+    <string name="submission_form_selected">Выбрано: %1$s</string>
+
+    <!-- Страница диспетчера задач -->
+    <string name="task_manager">Диспетчер задач</string>
+    <string name="no_tasks">Активных задач нет</string>
+    <string name="task_count">%1$d активных задач воспроизведения</string>
+
+    <!-- Страница поиска -->
+    <string name="search_placeholder">Поиск ресурсов…</string>
+    <string name="no_search_results">Искали-искали, ничего не нашлось</string>
+
+    <!-- Компоненты -->
+    <string name="resumable">Можно продолжить</string>
+    <string name="search_history">История поиска</string>
+    <string name="clear_text">Очистить</string>
+    <string name="copy_link">Копировать ссылку</string>
+    <string name="stop_all">Остановить всё</string>
+    <string name="unnamed_submission">Безымянная публикация</string>
+    <string name="unnamed_resource">Безымянный ресурс</string>
+    <string name="search_task_hint">Поиск задач…</string>
+    <string name="task_management_desc">Задачи воспроизведения, ткнутые с рабочего стола, послушно показываются тут, мяу~</string>
+    <string name="no_matching_tasks">Нет такой задачи</string>
+    <string name="try_different_keywords">Попробуйте другое кошачье слово, мяу~</string>
+    <string name="task_instance_count">%1$d экземпляров</string>
+    <string name="now_playing">Сейчас играет: %1$s</string>
+
+    <!-- Напоминания (для toast в ViewModel) -->
+    <string name="deleted_files">Удалил %1$d файлов, освободил %2$s♪</string>
+    <string name="resource_not_found_clone">Этот ресурс не найден, клонировать не получится</string>
+    <string name="cloned_as">Клонировал как「%1$s」♪</string>
+    <string name="resource_not_found_export">Этот ресурс не найден, экспортировать не получится</string>
+    <string name="export_failed">Экспорт не удался, попробуй ещё разок?</string>
+    <string name="import_success">Импорт удался, отлично♪</string>
+    <string name="import_failed">Импорт не удался: %1$s</string>
+    <string name="unknown_error">Возникла неизвестная маленькая проблемка</string>
+    <string name="created">Создал「%1$s」♪</string>
+    <string name="shortcut_requested">Добавил「%1$s」на рабочий стол, а потом ткни — и заиграет♪</string>
+    <string name="shortcut_sent">Запрос на добавление на рабочий стол отправлен. Если он не появился, разреши「Ярлык рабочего стола」в настройках лаунчера♪</string>
+    <string name="shortcut_try_anyway">Всё равно попробуем, мяу~</string>
+
+    <!-- Значения нового ресурса по умолчанию -->
+    <string name="new_resource_name">Новый пакет ресурсов</string>
+    <string name="new_resource_desc">Интересный пакет ресурсов</string>
+
+    <!-- Относительные даты -->
+    <string name="date_today">Сегодня</string>
+    <string name="date_yesterday">Вчера</string>
+    <string name="date_day_before_yesterday">Позавчера</string>
+    <string name="date_tomorrow">Завтра</string>
+    <string name="date_day_after_tomorrow">Послезавтра</string>
+    <string name="date_days_after">Через %d дн.</string>
+    <string name="date_days_before">%d дн. назад</string>
+    <string name="shortcut_permission_title">Ярлык рабочего стола</string>
+    <string name="go_to_settings">В настройки</string>
+    <string name="shortcut_tutorial_steps">1. Нажмите «В настройки», чтобы открыть страницу настроек приложения\n2. Найдите «Управление разрешениями»\n3. Разрешите «Ярлык рабочего стола»\n4. Вернитесь в приложение и снова нажмите «Добавить на рабочий стол»</string>
+    <string name="shortcut_steps_intro">Сначала шаг за шагом открой разрешение по инструкции, и всё заработает, мяу~</string>
+    <string name="shortcut_guide_xiaomi">Дорогой пользователь Xiaomi / Redmi</string>
+    <string name="shortcut_guide_huawei">Дорогой пользователь Huawei / Honor</string>
+    <string name="shortcut_guide_oppo">Дорогой пользователь OPPO</string>
+    <string name="shortcut_guide_vivo">Дорогой пользователь vivo</string>
+    <string name="shortcut_guide_other">Дорогой пользователь</string>
+</resources>
