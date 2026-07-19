@@ -92,7 +92,22 @@ class DetailViewModel : ViewModel() {
                             )
                         }
                         DownloadStatus.COMPLETED -> {
-                            // 已完成，由 Room Flow 触发完整更新
+                            // Room DB 已在 installResourceWithLocalData 中写入，
+                            // 但 Room Flow 可能在 isInstalling = true 时已提前消费，
+                            // 此处主动读取本地资源并更新 UI。
+                            _uiState.value = _uiState.value.copy(
+                                isInstalling = false,
+                                downloadProgress = 1f
+                            )
+                            viewModelScope.launch {
+                                repository.getLocalResourceById(currentId)?.let { local ->
+                                    currentAudioList = local.audioList
+                                    _uiState.value = _uiState.value.copy(
+                                        resource = local,
+                                        isDownloadComplete = true
+                                    )
+                                }
+                            }
                         }
                         else -> {}
                     }

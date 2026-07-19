@@ -42,12 +42,7 @@ data class DownloadProgress(
     val isCompleted: Boolean = false,
     val isFailed: Boolean = false,
     val errorMessage: String = ""
-) {
-    val progress: Float
-        get() = if (totalBytes > 0) {
-            (bytesWritten.toFloat() / totalBytes).coerceIn(0f, 1f)
-        } else 0f
-}
+)
 
 /**
  * 断点续传记录（.download 文件序列化模型，参照 C# DownloadRecordData）。
@@ -330,24 +325,6 @@ class DownloadManager(
         }
     }
 
-    /** 取消并中止指定资源的安装（删除资源等场景调用，确保后台任务停止） */
-    fun cancelInstall(resourceId: String) {
-        cancelFlags[resourceId]?.set(true)
-        updateState(resourceId, DownloadStatus.IDLE, 0f)
-    }
-
-    // ==================== 进度 API（现有兼容） ====================
-
-    fun registerListener(resourceId: String, listener: (DownloadProgress) -> Unit) {
-        listeners[resourceId] = listener
-    }
-
-    fun unregisterListener(resourceId: String) {
-        listeners.remove(resourceId)
-    }
-
-    fun getProgress(resourceId: String): DownloadProgress? = downloadProgress[resourceId]
-
     // ==================== 安装流程 ====================
 
     /**
@@ -498,7 +475,8 @@ class DownloadManager(
             // 已通过 .download 记录恢复的跳过
             if (recoveredSet.contains(audio.id)) continue
 
-            val filename = "audio_${index + 1}"
+            val ext = extractExtensionFromUrl(audio.url)
+            val filename = "audio_${index + 1}$ext"
             val localFile = File(audioDir, filename)
             val progressStr = "[${index + 1}/$totalCount]"
             Log.i("DownloadManager", "$progressStr 开始处理音频: ${audio.name} | url=${audio.url} | 目标=${localFile.absolutePath}")
@@ -626,6 +604,13 @@ class DownloadManager(
             .ifEmpty { fallback }
     }
 
+    /** 从 URL 中提取文件扩展名（含点号，如 .mp3），无扩展名则返回空字符串 */
+    private fun extractExtensionFromUrl(url: String): String {
+        val name = url.substringAfterLast('/').substringBefore('?')
+        val dotIndex = name.lastIndexOf('.')
+        return if (dotIndex >= 0) name.substring(dotIndex) else ""
+    }
+
     /**
      * 下载文件到指定路径。支持通过 cancelFlag 取消。
      */
@@ -692,7 +677,7 @@ class DownloadManager(
     }
 
     /** 单次网络下载（含临时文件与重命名），失败向上抛异常 */
-    private suspend fun doDownloadOnce(
+    private fun doDownloadOnce(
         resourceId: String,
         url: String,
         destFile: File,

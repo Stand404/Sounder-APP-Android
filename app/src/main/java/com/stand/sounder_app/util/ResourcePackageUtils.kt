@@ -32,7 +32,7 @@ object ResourcePackageUtils {
             """      { "name": ${jsonStr(audio.name)}, "durationMs": ${audio.duration} }"""
         }
         val iconFile = File(resource.icon)
-        val iconFileName = "icon${iconFile.extension}"
+        val iconFileName = "icon.${iconFile.extension}"
         val audioFileNames = resource.audioList.mapIndexed { i, _ ->
             val audioFile = File(resource.audioList[i].src)
             "audio_$i.${audioFile.extension}"
@@ -79,7 +79,7 @@ object ResourcePackageUtils {
                 // 图标（zip 根目录）
                 val iconFile = File(resource.icon)
                 if (iconFile.exists()) {
-                    zos.putNextEntry(ZipEntry("icon${iconFile.extension}"))
+                    zos.putNextEntry(ZipEntry("icon.${iconFile.extension}"))
                     BufferedInputStream(FileInputStream(iconFile)).use { bis -> bis.copyTo(zos) }
                     zos.closeEntry()
                 }
