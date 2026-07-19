@@ -12,6 +12,7 @@ import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
 import java.lang.reflect.Method
+import androidx.core.net.toUri
 
 /**
  * 检测「创建桌面快捷方式」权限在各厂商 ROM 上的授予情况。
@@ -70,7 +71,7 @@ object ShortcutPermissionChecker {
         val contentResolver = context.contentResolver ?: return ShortcutPermState.UNKNOWN
         var query: Cursor? = null
         return try {
-            val uri = Uri.parse("content://com.bbk.launcher2.settings/favorites")
+            val uri = "content://com.bbk.launcher2.settings/favorites".toUri()
             query = contentResolver.query(uri, null, null, null, null)
             if (query == null) {
                 ShortcutPermState.UNKNOWN

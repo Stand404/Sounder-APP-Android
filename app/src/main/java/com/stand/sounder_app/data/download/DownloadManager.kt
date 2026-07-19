@@ -240,14 +240,14 @@ class DownloadManager(
     }
 
     /** 更新 .download 记录中的图标下载状态 */
-    private fun markIconDownloaded(resourceId: String, filesDir: File, resource: RemoteResource?, downloaded: Boolean) {
+    private fun markIconDownloaded(resourceId: String, filesDir: File, resource: RemoteResource?) {
         val existing = readDownloadRecord(resourceId, filesDir)
-        val base = existing ?: buildBaseRecord(resourceId, resource) ?: return
-        saveDownloadRecord(resourceId, base.copy(iconDownloaded = downloaded, lastUpdateTime = System.currentTimeMillis()), filesDir)
+        val base = existing ?: buildBaseRecord(resource) ?: return
+        saveDownloadRecord(resourceId, base.copy(iconDownloaded = true, lastUpdateTime = System.currentTimeMillis()), filesDir)
     }
 
     /** 仅含元数据的基线记录（无已完成音频时使用） */
-    private fun buildBaseRecord(resourceId: String, resource: RemoteResource?): DownloadRecord? {
+    private fun buildBaseRecord(resource: RemoteResource?): DownloadRecord? {
         if (resource == null) return null
         return DownloadRecord(
             resourceId = resource.id,
@@ -546,6 +546,11 @@ class DownloadManager(
 
     /**
      * 下载资源图标到 audio/{resourceId}/ 目录下。
+     *
+     * 优化策略（利用浏览时已渲染的 Glide 缓存）：
+     * 1. 目标文件已存在 → 直接复用
+     * 2. Glide 磁盘缓存命中 → 拷贝缓存（浏览时通过 Glide 渲染的图片已缓存在此）
+     * 3. 以上均未命中 → 从网络下载
      */
     suspend fun downloadResourceIcon(
         resourceId: String,
@@ -558,17 +563,31 @@ class DownloadManager(
         if (cancelFlag?.get() == true) return null
 
         val audioDir = File(filesDir, "audio/$resourceId")
-        val filename = extractFilenameFromUrl(iconUrl, "icon")
+        val filename = extractFilenameFromUrl(iconUrl)
         val iconFile = File(audioDir, filename)
 
         Log.i("DownloadManager", "处理图标: url=$iconUrl | 目标=${iconFile.absolutePath}")
 
+        // 1. 目标文件已存在 → 直接复用
         if (iconFile.exists()) {
             Log.i("DownloadManager", "图标已存在: size=${iconFile.length()}bytes | 路径=${iconFile.absolutePath}")
-            markIconDownloaded(resourceId, filesDir, resource, true)
+            markIconDownloaded(resourceId, filesDir, resource)
+            syncToInstalledIcons(iconFile, resourceId, filesDir)
             return iconFile.absolutePath
         }
 
+        // 2. 检查 Glide 磁盘缓存（浏览时图片已被渲染，Glide 自动缓存到 image_manager_disk_cache）
+        val glideCachedFile = getGlideCachedIcon(iconUrl, filesDir)
+        if (glideCachedFile != null) {
+            audioDir.mkdirs()
+            glideCachedFile.copyTo(iconFile, overwrite = true)
+            Log.i("DownloadManager", "✓ 从 Glide 磁盘缓存复制图标: size=${iconFile.length()}bytes | 路径=${iconFile.absolutePath}")
+            markIconDownloaded(resourceId, filesDir, resource)
+            syncToInstalledIcons(iconFile, resourceId, filesDir)
+            return iconFile.absolutePath
+        }
+
+        // 3. 以上均未命中 → 网络下载
         val startTime = System.currentTimeMillis()
         val result = download(
             resourceId = resourceId,
@@ -580,11 +599,8 @@ class DownloadManager(
 
         return if (result.isSuccess) {
             Log.i("DownloadManager", "✓ 图标下载成功: size=${iconFile.length()}bytes | 耗时=${elapsed}ms | 路径=${iconFile.absolutePath}")
-            markIconDownloaded(resourceId, filesDir, resource, true)
-            // 同时保存到 installed_icons 专用文件夹（供图标选择器使用）
-            try {
-                iconFile.copyTo(File(filesDir, "installed_icons/${resourceId}.jpg"), overwrite = true)
-            } catch (_: Exception) { }
+            markIconDownloaded(resourceId, filesDir, resource)
+            syncToInstalledIcons(iconFile, resourceId, filesDir)
             iconFile.absolutePath
         } else {
             val exception = result.exceptionOrNull()
@@ -599,7 +615,7 @@ class DownloadManager(
     }
 
     /** 从 URL 末尾提取文件名 */
-    private fun extractFilenameFromUrl(url: String, fallback: String): String {
+    private fun extractFilenameFromUrl(url: String, fallback: String = "icon"): String {
         return url.substringAfterLast('/').substringBefore('?')
             .ifEmpty { fallback }
     }
@@ -609,6 +625,53 @@ class DownloadManager(
         val name = url.substringAfterLast('/').substringBefore('?')
         val dotIndex = name.lastIndexOf('.')
         return if (dotIndex >= 0) name.substring(dotIndex) else ""
+    }
+
+    // ==================== 图标缓存优化（Glide 磁盘缓存 + installed_icons） ====================
+
+    /**
+     * 计算 Glide 磁盘缓存使用的 SafeKey。
+     * Glide 内部使用 SHA-256 对缓存键取哈希后做 Base64 URL-Safe 编码，
+     * 用于在 image_manager_disk_cache 目录中命名缓存文件。
+     */
+    private fun computeGlideSafeKey(url: String): String {
+        val digest = java.security.MessageDigest.getInstance("SHA-256")
+        digest.update(url.toByteArray(Charsets.UTF_8))
+        return android.util.Base64.encodeToString(
+            digest.digest(),
+            android.util.Base64.URL_SAFE or android.util.Base64.NO_WRAP
+        )
+    }
+
+    /**
+     * 从 Glide 磁盘缓存中查找图标文件。
+     * 用户在商店/搜索页浏览时，图标已经过 Glide 加载并缓存到
+     * [appCacheDir]/image_manager_disk_cache/ 目录下，通过 URL 的
+     * SHA-256 SafeKey 可定位到缓存文件。
+     *
+     * @return 缓存文件引用，未找到则返回 null
+     */
+    private fun getGlideCachedIcon(iconUrl: String, filesDir: File): File? {
+        if (iconUrl.isEmpty()) return null
+        // filesDir = /data/data/{pkg}/files → cacheDir = /data/data/{pkg}/cache
+        val appCacheDir = filesDir.parentFile?.let { File(it, "cache") } ?: return null
+        val glideCacheDir = File(appCacheDir, "image_manager_disk_cache")
+        if (!glideCacheDir.isDirectory) return null
+
+        val safeKey = computeGlideSafeKey(iconUrl)
+        val cachedFile = File(glideCacheDir, safeKey)
+        if (cachedFile.isFile && cachedFile.length() > 0) {
+            Log.i("DownloadManager", "Glide磁盘缓存命中: url=$iconUrl, file=${cachedFile.absolutePath}, size=${cachedFile.length()}bytes")
+            return cachedFile
+        }
+        return null
+    }
+
+    /** 将已下载的图标同步复制到 installed_icons 目录供图标选择器使用 */
+    private fun syncToInstalledIcons(iconFile: File, resourceId: String, filesDir: File) {
+        try {
+            iconFile.copyTo(File(filesDir, "installed_icons/${resourceId}.jpg"), overwrite = true)
+        } catch (_: Exception) { }
     }
 
     /**

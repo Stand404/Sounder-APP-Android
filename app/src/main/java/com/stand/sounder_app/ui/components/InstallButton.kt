@@ -52,12 +52,12 @@ import kotlinx.coroutines.delay
  */
 @Composable
 fun InstallButton(
+    modifier: Modifier = Modifier,
     isInstalled: Boolean = false,
     resumable: Boolean = false,
     downloadState: DownloadState? = null,
     wide: Boolean = false,
-    onToggleInstall: () -> Unit,
-    modifier: Modifier = Modifier
+    onToggleInstall: () -> Unit
 ) {
     val status = downloadState?.status
     val progress = downloadState?.progress ?: 0f

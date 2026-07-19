@@ -20,8 +20,6 @@ class RemoteResourceListResponse(
 
 /** 列表分页数据体（列表 JSON 键为 "data"，用 SerializedName 映射为 items） */
 class RemoteResourceListData(
-    val total: Int = 0,
-    val page: Int = 1,
     val size: Int = 10,
     @SerializedName("data")
     val items: List<RemoteResource> = emptyList()

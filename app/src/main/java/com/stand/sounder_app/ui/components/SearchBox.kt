@@ -43,10 +43,10 @@ import com.stand.sounder_app.R
  */
 @Composable
 fun SearchBox(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String = "搜索...",
-    modifier: Modifier = Modifier,
     horizontalPadding: Dp = 16.dp,
     onSearch: (() -> Unit)? = null,
     showClearButton: Boolean = true,

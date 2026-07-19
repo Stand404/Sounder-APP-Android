@@ -2,7 +2,6 @@ package com.stand.sounder_app.viewmodel
 
 import android.app.Application
 import android.content.Intent
-import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.stand.sounder_app.MyApp
@@ -12,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import androidx.core.net.toUri
 
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -62,7 +62,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     /** 通过系统浏览器打开外部链接 */
     fun openUrl(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+        val intent = Intent(Intent.ACTION_VIEW, url.toUri()).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
         getApplication<Application>().startActivity(intent)

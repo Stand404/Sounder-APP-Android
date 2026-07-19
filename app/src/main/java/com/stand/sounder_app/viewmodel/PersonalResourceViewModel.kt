@@ -29,6 +29,8 @@ import com.stand.sounder_app.data.model.LoopMode
 import com.stand.sounder_app.data.model.OrderMode
 import com.stand.sounder_app.data.model.PlayMode
 import com.stand.sounder_app.util.ResourcePackageUtils.resourceDir
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.scale
 
 class PersonalResourceViewModel : ViewModel() {
 
@@ -128,8 +130,8 @@ class PersonalResourceViewModel : ViewModel() {
                 return@launch
             }
             val newId = "local_${System.currentTimeMillis()}_${(0..9999).random()}"
-            val newDir = ResourcePackageUtils.resourceDir(newId)
-            val srcDir = ResourcePackageUtils.resourceDir(resourceId)
+            val newDir = resourceDir(newId)
+            val srcDir = resourceDir(resourceId)
 
             // 拷贝音频/图标等本地文件
             runCatching { ResourcePackageUtils.copyDirectory(srcDir, newDir) }
@@ -178,7 +180,7 @@ class PersonalResourceViewModel : ViewModel() {
             if (zipFile.exists()) zipFile.delete()
 
             val ok = withContext(Dispatchers.IO) {
-                ResourcePackageUtils.createExportZip(source, zipFile, appContext.filesDir)
+                ResourcePackageUtils.createExportZip(source, zipFile)
             }
 
             if (ok) {
@@ -262,7 +264,7 @@ class PersonalResourceViewModel : ViewModel() {
      */
     private suspend fun importZip(context: Context, uri: Uri): String {
         val newId = "local_${System.currentTimeMillis()}_${(0..9999).random()}"
-        val installDir = ResourcePackageUtils.resourceDir(newId)
+        val installDir = resourceDir(newId)
         installDir.mkdirs()
 
         val result = withContext(Dispatchers.IO) {
@@ -278,6 +280,10 @@ class PersonalResourceViewModel : ViewModel() {
                 iconSrc.renameTo(destIcon)
             }
             iconPath = destIcon.absolutePath
+            // 同时复制到 installed_icons 公开文件夹供图标选择器使用
+            try {
+                destIcon.copyTo(File(MyApp.instance.filesDir, "installed_icons/${newId}.jpg"), overwrite = true)
+            } catch (_: Exception) { }
         }
 
         // 标准化音频文件名并补全 ID
@@ -363,7 +369,7 @@ class PersonalResourceViewModel : ViewModel() {
                 val shortcut = android.content.pm.ShortcutInfo.Builder(context, shortcutId)
                     .setShortLabel(resource.name)
                     .setLongLabel(resource.name)
-                    .setIcon(buildShortcutIcon(context, resource.icon, resource.id))
+                    .setIcon(buildShortcutIcon(context, resource.icon))
                     .setIntent(intent)
                     .build()
                 shortcutManager.requestPinShortcut(shortcut, null)
@@ -386,7 +392,7 @@ class PersonalResourceViewModel : ViewModel() {
             putExtra(com.stand.sounder_app.shortcut.ShortcutPlayReceiver.EXTRA_RESOURCE_ID, resource.id)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         }
-        val iconBitmap = createScaledShortcutIcon(context, resource.icon, resource.id)
+        val iconBitmap = createScaledShortcutIcon(context, resource.icon)
         val addIntent = Intent("com.android.launcher.action.INSTALL_SHORTCUT").apply {
             putExtra("android.intent.extra.shortcut.NAME", resource.name)
             putExtra("android.intent.extra.shortcut.INTENT", shortcutIntent)
@@ -403,29 +409,26 @@ class PersonalResourceViewModel : ViewModel() {
      */
     private fun createScaledShortcutIcon(
         context: Context,
-        iconPath: String,
-        resourceId: String
+        iconPath: String
     ): android.graphics.Bitmap {
         val density = context.resources.displayMetrics.density
         val canvasSize = (108 * density).toInt().coerceAtLeast(1) // 标准快捷方式画布
         val innerRatio = 0.67f                               // 原图占据画布比例，其余为周围空白
         val innerSize = (canvasSize * innerRatio).toInt().coerceAtLeast(1)
 
-        val output = android.graphics.Bitmap.createBitmap(
-            canvasSize, canvasSize, android.graphics.Bitmap.Config.ARGB_8888
-        )
+        val output = createBitmap(canvasSize, canvasSize)
         val canvas = android.graphics.Canvas(output)
 
         // 取得原图：资源专属图标优先，否则回退到 App 图标
         val src = if (iconPath.isNotBlank()) {
-            val file = java.io.File(iconPath)
+            val file = File(iconPath)
             if (file.exists()) android.graphics.BitmapFactory.decodeFile(file.absolutePath) else null
         } else null
             ?: android.graphics.BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher)
 
         if (src != null) {
             // 将原图缩放到 innerSize 并居中绘制，四周自然形成透明空白
-            val inner = android.graphics.Bitmap.createScaledBitmap(src, innerSize, innerSize, true)
+            val inner = src.scale(innerSize, innerSize)
             val left = (canvasSize - innerSize) / 2f
             val top = (canvasSize - innerSize) / 2f
             canvas.drawBitmap(inner, left, top, null)
@@ -437,8 +440,8 @@ class PersonalResourceViewModel : ViewModel() {
      * 构建快捷方式图标：复用「原图居中 + 四周留白」的位图并包装为自适应图标。
      * 这样在 Android 8+ 的 ShortcutManager(requestPinShortcut) 路径下也不会被拉伸放大。
      */
-    private fun buildShortcutIcon(context: Context, iconPath: String, resourceId: String): android.graphics.drawable.Icon {
-        val bitmap = createScaledShortcutIcon(context, iconPath, resourceId)
+    private fun buildShortcutIcon(context: Context, iconPath: String): android.graphics.drawable.Icon {
+        val bitmap = createScaledShortcutIcon(context, iconPath)
         return android.graphics.drawable.Icon.createWithAdaptiveBitmap(bitmap)
     }
 

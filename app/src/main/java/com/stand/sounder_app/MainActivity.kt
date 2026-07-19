@@ -191,7 +191,7 @@ fun SounderApp() {
                                     },
                                 color = Color.Transparent
                             ) {
-                                androidx.compose.foundation.layout.Box(
+                                Box(
                                     modifier = Modifier.fillMaxSize(),
                                     contentAlignment = Alignment.Center
                                 ) {

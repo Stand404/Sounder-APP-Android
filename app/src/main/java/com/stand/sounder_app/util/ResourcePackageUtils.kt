@@ -64,11 +64,9 @@ object ResourcePackageUtils {
     /** 导出资源为 zip 文件（与 C# 导出格式完全一致） */
     fun createExportZip(
         resource: Resource,
-        destFile: File,
-        filesDir: File
+        destFile: File
     ): Boolean {
         return runCatching {
-            val srcDir = resourceDir(resource.id)
             ZipOutputStream(BufferedOutputStream(FileOutputStream(destFile))).use { zos ->
                 // manifest.json
                 val manifest = buildManifest(resource)

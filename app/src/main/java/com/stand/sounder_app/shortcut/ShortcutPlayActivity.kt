@@ -1,12 +1,10 @@
 package com.stand.sounder_app.shortcut
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import com.stand.sounder_app.MyApp
 import com.stand.sounder_app.R
-import com.stand.sounder_app.data.model.LoopMode
 import com.stand.sounder_app.data.model.OrderMode
 import com.stand.sounder_app.data.model.PlayMode
 import kotlinx.coroutines.Dispatchers

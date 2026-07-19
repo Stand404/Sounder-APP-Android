@@ -23,13 +23,13 @@ import com.stand.sounder_app.data.model.RemoteResource
 
 @Composable
 fun ShopCard(
+    modifier: Modifier = Modifier,
     resource: RemoteResource,
     isInstalled: Boolean = false,
     resumable: Boolean = false,
     downloadState: DownloadState? = null,
     onCardClick: () -> Unit,
-    onToggleInstall: () -> Unit,
-    modifier: Modifier = Modifier
+    onToggleInstall: () -> Unit
 ) {
     Card(
         modifier = modifier

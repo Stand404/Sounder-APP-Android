@@ -47,13 +47,13 @@ data class IosActionSheetItem(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IosActionSheet(
+    modifier: Modifier = Modifier,
     show: Boolean,
     onDismiss: () -> Unit,
     title: String? = null,
     message: String? = null,
     items: List<IosActionSheetItem>,
-    cancelLabel: String = "",
-    modifier: Modifier = Modifier
+    cancelLabel: String = ""
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()

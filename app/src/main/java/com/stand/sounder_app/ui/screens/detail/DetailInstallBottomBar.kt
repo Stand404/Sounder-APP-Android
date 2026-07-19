@@ -14,10 +14,10 @@ import com.stand.sounder_app.ui.components.InstallButton
  */
 @Composable
 fun DetailInstallBottomBar(
+    modifier: Modifier = Modifier,
     isInstalled: Boolean = false,
     downloadState: DownloadState? = null,
-    onToggleInstall: () -> Unit,
-    modifier: Modifier = Modifier
+    onToggleInstall: () -> Unit
 ) {
     Box(
         modifier = modifier

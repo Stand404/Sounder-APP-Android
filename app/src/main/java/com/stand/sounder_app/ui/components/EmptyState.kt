@@ -31,6 +31,7 @@ import com.stand.sounder_app.R
  */
 @Composable
 fun EmptyState(
+    modifier: Modifier = Modifier,
     icon: @Composable () -> Unit = {
         Icon(
             painter = painterResource(R.drawable.ic_box),
@@ -41,7 +42,6 @@ fun EmptyState(
     },
     title: String,
     subtitle: String = "",
-    modifier: Modifier = Modifier,
     action: @Composable (() -> Unit)? = null,
     isLoading: Boolean = false,
     isError: Boolean = false,

@@ -2,8 +2,6 @@ package com.stand.sounder_app.data.repository
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.Composable
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
 import java.io.File
+import androidx.core.content.edit
 
 class SettingsRepository(context: Context) {
 
@@ -45,7 +44,7 @@ class SettingsRepository(context: Context) {
     var themeMode: String
         get() = prefs.getString(KEY_THEME_MODE, THEME_AUTO) ?: THEME_AUTO
         set(value) {
-            prefs.edit().putString(KEY_THEME_MODE, value).apply()
+            prefs.edit { putString(KEY_THEME_MODE, value) }
             _themeModeFlow.value = value
         }
 
@@ -57,22 +56,12 @@ class SettingsRepository(context: Context) {
     var language: String
         get() = prefs.getString(KEY_LANGUAGE, LANG_SYSTEM) ?: LANG_SYSTEM
         set(value) {
-            prefs.edit().putString(KEY_LANGUAGE, value).apply()
+            prefs.edit { putString(KEY_LANGUAGE, value) }
             _languageFlow.value = value
         }
 
     private val _languageFlow = MutableStateFlow(language)
     val languageFlow: StateFlow<String> = _languageFlow.asStateFlow()
-
-    /** 根据设置判断当前是否为深色模式 */
-    @Composable
-    fun isDarkTheme(): Boolean {
-        return when (themeMode) {
-            THEME_LIGHT -> false
-            THEME_DARK -> true
-            else -> isSystemInDarkTheme()
-        }
-    }
 
     /** 获取缓存大小（字节）：图片缓存(Glide 磁盘缓存) + 试听音频缓存 */
     suspend fun getCacheSize(): Long = withContext(Dispatchers.IO) {

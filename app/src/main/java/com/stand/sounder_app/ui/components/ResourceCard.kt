@@ -34,11 +34,11 @@ import com.stand.sounder_app.R
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ResourceCard(
+    modifier: Modifier = Modifier,
     resource: Resource,
     onClick: () -> Unit,
     onLongClick: () -> Unit,
-    resumable: Boolean = false,
-    modifier: Modifier = Modifier
+    resumable: Boolean = false
 ) {
     Card(
         modifier = modifier

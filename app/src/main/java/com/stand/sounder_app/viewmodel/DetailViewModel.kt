@@ -156,7 +156,7 @@ class DetailViewModel : ViewModel() {
                             resource = localResource,
                             isLoading = false,
                             isDownloadComplete = isActuallyComplete,
-                            isInstalling = isActive && activeState?.status == DownloadStatus.DOWNLOADING,
+                            isInstalling = isActive && activeState.status == DownloadStatus.DOWNLOADING,
                             downloadProgress = activeState?.progress ?: 0f
                         )
                     },
@@ -333,10 +333,5 @@ class DetailViewModel : ViewModel() {
         viewModelScope.launch {
             repository.updateLoopMode(resource.id, mode)
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        // 不在此停止播放，使后台播放持续运行，由「任务管理」模块统一管控
     }
 }

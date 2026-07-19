@@ -29,34 +29,6 @@ class ResourceRepository(
         return resourceDao.getResourceById(id)?.toDomain()
     }
 
-    /** 安装资源（从远程下载后保存到本地） */
-    suspend fun installResource(remote: RemoteResource): Resource {
-        val entity = ResourceEntity(
-            id = remote.id,
-            name = remote.name,
-            displayName = remote.displayName.ifEmpty { remote.name },
-            description = remote.description,
-            icon = remote.icon,
-            audioList = remote.audioList.map { audio ->
-                AudioItem(
-                    id = audio.id,
-                    name = audio.name,
-                    src = audio.url,
-                    duration = audio.duration
-                )
-            },
-            size = parseSizeString(remote.size),
-            publishDate = remote.publishDate,
-            installDate = System.currentTimeMillis(),
-            playMode = PlayMode.OVERLAY,
-            orderMode = OrderMode.ORDER,
-            loopMode = LoopMode.SINGLE,
-            currentAudioIndex = 0
-        )
-        resourceDao.insertResource(entity)
-        return entity.toDomain()
-    }
-
     /**
      * 安装资源（使用已下载的本地音频列表和图标路径）。
      * 参照 C# SaveResourceJson：所有文件下载完成后才写入 DB，
@@ -89,22 +61,6 @@ class ResourceRepository(
     /** 删除本地资源 */
     suspend fun deleteResource(id: String) {
         resourceDao.deleteResourceById(id)
-    }
-
-    /** 更新资源信息 */
-    suspend fun updateResourceInfo(id: String, name: String, description: String, icon: String) {
-        resourceDao.updateResourceInfo(id, name, description, icon)
-    }
-
-    /** 仅更新资源图标 */
-    suspend fun updateIcon(id: String, icon: String) {
-        resourceDao.updateIcon(id, icon)
-    }
-
-    /** 更新音频列表（通过实体替换方式） */
-    suspend fun updateAudioList(id: String, audioList: List<AudioItem>) {
-        val entity = resourceDao.getResourceById(id) ?: return
-        resourceDao.insertResource(entity.copy(audioList = audioList))
     }
 
     /** 更新播放模式 */
@@ -192,17 +148,6 @@ class ResourceRepository(
             }
         } catch (e: Exception) {
             Result.failure(e)
-        }
-    }
-
-    /** 是否有更多数据 */
-    suspend fun hasMoreRemoteResources(page: Int, limit: Int = 10): Boolean {
-        return try {
-            val response = apiService.getResourceList(page, limit)
-            val data = response.data ?: return false
-            data.page * data.size < data.total
-        } catch (e: Exception) {
-            false
         }
     }
 }

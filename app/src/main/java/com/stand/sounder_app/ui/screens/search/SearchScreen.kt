@@ -49,6 +49,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import androidx.compose.ui.res.stringResource
 import com.stand.sounder_app.R
+import androidx.core.content.edit
 
 private const val PREFS_NAME = "sounder_search"
 private const val KEY_HISTORY = "search_history"
@@ -65,7 +66,7 @@ private fun loadHistory(context: android.content.Context): MutableList<String> {
 
 private fun saveHistory(context: android.content.Context, history: List<String>) {
     val prefs = context.getSharedPreferences(PREFS_NAME, android.content.Context.MODE_PRIVATE)
-    prefs.edit().putString(KEY_HISTORY, Gson().toJson(history)).apply()
+    prefs.edit { putString(KEY_HISTORY, Gson().toJson(history)) }
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)

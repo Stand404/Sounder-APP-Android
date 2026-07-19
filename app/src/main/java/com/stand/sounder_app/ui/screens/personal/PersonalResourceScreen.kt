@@ -360,7 +360,6 @@ fun PersonalResourceScreen(
 
         showShortcutGuide?.let { res ->
             ShortcutPermissionSheet(
-                resource = res,
                 onDismiss = { showShortcutGuide = null },
                 onGoToSettings = {
                     ShortcutPermissionChecker.openShortcutSettings(context)

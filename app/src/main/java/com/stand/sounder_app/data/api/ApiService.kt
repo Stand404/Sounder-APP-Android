@@ -1,10 +1,8 @@
 package com.stand.sounder_app.data.api
 
 import com.stand.sounder_app.data.model.CreateSubmissionRequest
-import com.stand.sounder_app.data.model.RemoteResource
 import com.stand.sounder_app.data.model.RemoteResourceDetailResponse
 import com.stand.sounder_app.data.model.RemoteResourceListResponse
-import com.stand.sounder_app.data.model.Submission
 import com.stand.sounder_app.data.model.SubmissionDetailResponse
 import com.stand.sounder_app.data.model.SubmissionListResponse
 import retrofit2.http.Body

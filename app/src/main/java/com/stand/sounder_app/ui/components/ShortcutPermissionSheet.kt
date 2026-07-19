@@ -21,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.stand.sounder_app.R
-import com.stand.sounder_app.data.model.Resource
 
 /**
  * 当「创建桌面快捷方式」权限被厂商拒绝 / 需要询问时，弹出引导弹窗，
@@ -30,7 +29,6 @@ import com.stand.sounder_app.data.model.Resource
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShortcutPermissionSheet(
-    resource: Resource,
     onDismiss: () -> Unit,
     onGoToSettings: () -> Unit,
     onTryAnyway: () -> Unit

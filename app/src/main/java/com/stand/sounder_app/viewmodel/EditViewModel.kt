@@ -19,6 +19,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.UUID
+import androidx.core.graphics.scale
+import androidx.core.net.toUri
 
 data class EditUiState(
     val resource: Resource? = null,
@@ -122,14 +124,14 @@ class EditViewModel : ViewModel() {
     /**
      * 从系统文件选择器 Uri 选取图标，自动裁剪为 150×150 正方形并保存到资源自身目录
      */
-    fun pickIconFromUri(uri: android.net.Uri) {
+    fun pickIconFromUri(uri: Uri) {
         val resourceId = _uiState.value.resource?.id ?: return
         viewModelScope.launch {
             try {
                 val context = MyApp.instance
-                val destDir = java.io.File(context.filesDir, "resources/$resourceId")
+                val destDir = File(context.filesDir, "resources/$resourceId")
                 destDir.mkdirs()
-                val destFile = java.io.File(destDir, "icon.png")
+                val destFile = File(destDir, "icon.png")
 
                 // 读取原始 Bitmap
                 val inputStream = context.contentResolver.openInputStream(uri)
@@ -143,7 +145,7 @@ class EditViewModel : ViewModel() {
                     val x = (original.width - cropSize) / 2
                     val y = (original.height - cropSize) / 2
                     val cropped = android.graphics.Bitmap.createBitmap(original, x, y, cropSize, cropSize)
-                    val resized = android.graphics.Bitmap.createScaledBitmap(cropped, size, size, true)
+                    val resized = cropped.scale(size, size)
 
                     destFile.outputStream().use { output ->
                         resized.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, output)
@@ -171,11 +173,11 @@ class EditViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val context = MyApp.instance
-                val destDir = java.io.File(context.filesDir, "resources/$resourceId")
+                val destDir = File(context.filesDir, "resources/$resourceId")
                 destDir.mkdirs()
-                val source = java.io.File(installedPath)
+                val source = File(installedPath)
                 val extension = source.extension.takeIf { it.isNotBlank() } ?: "png"
-                val destFile = java.io.File(destDir, "icon.$extension")
+                val destFile = File(destDir, "icon.$extension")
                 source.copyTo(destFile, overwrite = true)
                 updateIcon(destFile.absolutePath)
             } catch (_: Exception) {
@@ -241,7 +243,7 @@ class EditViewModel : ViewModel() {
             player.reset()
             val audioItem = audioList[index]
             val uri = if (audioItem.src.startsWith("http")) {
-                Uri.parse(audioItem.src)
+                audioItem.src.toUri()
             } else {
                 Uri.fromFile(File(audioItem.src))
             }
@@ -409,24 +411,20 @@ class EditViewModel : ViewModel() {
         )
     }
 
-    fun generateNewResourceId(): String {
-        return UUID.randomUUID().toString()
-    }
-
     /**
      * 从系统文件选择器 Uri 添加音频（参照 Win AddAudioFromFileAsync）
      */
-    fun addAudioFromUri(uri: android.net.Uri) {
+    fun addAudioFromUri(uri: Uri) {
         val resourceId = _uiState.value.resource?.id ?: return
         viewModelScope.launch {
             try {
                 val context = MyApp.instance
-                val audioDir = java.io.File(context.filesDir, "resources/$resourceId/audio")
+                val audioDir = File(context.filesDir, "resources/$resourceId/audio")
                 audioDir.mkdirs()
 
                 val audioId = "audio_${System.currentTimeMillis()}_${UUID.randomUUID().toString().take(8)}"
                 val extension = getExtensionFromUri(context, uri)
-                val destFile = java.io.File(audioDir, "$audioId$extension")
+                val destFile = File(audioDir, "$audioId$extension")
 
                 context.contentResolver.openInputStream(uri)?.use { input ->
                     destFile.outputStream().use { output ->
@@ -463,7 +461,7 @@ class EditViewModel : ViewModel() {
         }
     }
 
-    private fun getExtensionFromUri(context: android.content.Context, uri: android.net.Uri): String {
+    private fun getExtensionFromUri(context: android.content.Context, uri: Uri): String {
         val mimeType = context.contentResolver.getType(uri) ?: return ".mp3"
         return when {
             mimeType.contains("mp3") -> ".mp3"
