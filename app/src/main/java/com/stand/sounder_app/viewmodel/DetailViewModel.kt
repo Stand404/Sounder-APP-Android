@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import com.stand.sounder_app.R
+import java.io.File
 
 data class DetailUiState(
     val resource: Resource? = null,
@@ -207,11 +208,14 @@ class DetailViewModel : ViewModel() {
         val currentLoop = state.resource?.loopMode ?: LoopMode.SINGLE
 
         viewModelScope.launch {
+            // 将远程音频解析为本地缓存路径（已缓存直接使用，否则下载到缓存后使用）
+            val resolvedList = resolveLocalAudioList(audioList)
+
             val displayName = _uiState.value.resource?.displayName
                 ?: _uiState.value.remoteResource?.displayName ?: ""
             audioPlayer.setPlaySettings(currentMode, currentOrder, currentLoop)
             audioPlayer.play(
-                audioList = audioList,
+                audioList = resolvedList,
                 resourceId = resourceId,
                 displayName = displayName,
                 startIndex = index,
@@ -249,6 +253,28 @@ class DetailViewModel : ViewModel() {
                     }
                 }
             )
+        }
+    }
+
+    /**
+     * 将音频列表中的远程 URL 解析为本地缓存路径。
+     * - 若音频已在 audio_cache 中缓存，直接使用本地路径；
+     * - 若未缓存，下载到缓存目录后使用本地路径；
+     * - 下载失败或已是本地路径则保持原样。
+     */
+    private suspend fun resolveLocalAudioList(audioList: List<AudioItem>): List<AudioItem> {
+        val cacheDir = File(MyApp.instance.filesDir, "audio_cache")
+        cacheDir.mkdirs()
+        return audioList.map { audio ->
+            if (!audio.src.startsWith("http")) return@map audio
+            val cacheKey = audio.src.hashCode().toUInt().toString(16)
+            val cacheFile = File(cacheDir, cacheKey)
+            if (cacheFile.exists()) {
+                audio.copy(src = cacheFile.absolutePath)
+            } else {
+                val result = downloadManager.download(resourceId, audio.src, cacheFile)
+                if (result.isSuccess) audio.copy(src = cacheFile.absolutePath) else audio
+            }
         }
     }
 

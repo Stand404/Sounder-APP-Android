@@ -89,9 +89,7 @@ fun AudioItemRow(
                     text = name,
                     fontSize = 16.sp,
                     fontWeight = if (isPlaying) FontWeight.Medium else FontWeight.Normal,
-                    color = nameColor,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    color = nameColor
                 )
                 Row(
                     verticalAlignment = Alignment.CenterVertically,

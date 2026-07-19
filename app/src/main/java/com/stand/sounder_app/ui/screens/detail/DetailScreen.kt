@@ -162,7 +162,7 @@ fun DetailScreen(
                             modifier = Modifier.align(Alignment.CenterEnd)
                         ) {
                             Icon(
-                                painter = painterResource(R.drawable.ic_more),
+                                painter = painterResource(R.drawable.ic_more_vert),
                                 contentDescription = stringResource(R.string.more_actions)
                             )
                         }
