@@ -185,7 +185,8 @@ class DetailViewModel : ViewModel() {
         } else {
             _uiState.value = _uiState.value.copy(isInstalling = true, downloadProgress = 0f)
         }
-        downloadManager.toggleDownload(remote.id, MyApp.instance.filesDir)
+        // 传入详情页已加载的 remoteResource，避免 installResourceById 中重复请求远程详情
+        downloadManager.toggleDownload(remote.id, MyApp.instance.filesDir, existingResource = remote)
     }
 
     fun togglePlay(index: Int) {

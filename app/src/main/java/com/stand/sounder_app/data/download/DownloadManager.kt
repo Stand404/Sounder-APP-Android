@@ -1,7 +1,10 @@
 package com.stand.sounder_app.data.download
 
 import android.util.Log
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.gson.Gson
+import com.stand.sounder_app.MyApp
 import com.stand.sounder_app.data.model.AudioItem
 import com.stand.sounder_app.data.model.RemoteAudioItem
 import com.stand.sounder_app.data.model.RemoteResource
@@ -59,8 +62,28 @@ data class DownloadRecord(
     val totalAudioCount: Int = 0,
     val downloadedAudioItems: List<DownloadedAudioItem> = emptyList(),
     val iconDownloaded: Boolean = false,
-    val lastUpdateTime: Long = 0L
-)
+    val lastUpdateTime: Long = 0L,
+    /** 远程音频列表 JSON（包含 URL），暂停后继续时无需重新请求远程详情 */
+    val remoteAudioJson: String = ""
+) {
+    /** 从 .download 记录重建 RemoteResource，用于断点续传时跳过网络请求 */
+    fun toRemoteResource(): RemoteResource? {
+        val audioList = try {
+            gson.fromJson(remoteAudioJson, Array<RemoteAudioItem>::class.java)?.toList()
+        } catch (_: Exception) { null }
+        if (audioList == null) return null
+        return RemoteResource(
+            id = resourceId,
+            name = resourceName,
+            displayName = displayName,
+            description = description,
+            icon = icon,
+            size = size,
+            publishDate = publishDate,
+            audioList = audioList
+        )
+    }
+}
 
 /** 已完成的单个音频项（参照 C# DownloadedAudioItemData） */
 data class DownloadedAudioItem(
@@ -234,7 +257,8 @@ class DownloadManager(
             totalAudioCount = resource.audioList.size,
             downloadedAudioItems = items,
             iconDownloaded = false,
-            lastUpdateTime = System.currentTimeMillis()
+            lastUpdateTime = System.currentTimeMillis(),
+            remoteAudioJson = gson.toJson(resource.audioList)
         )
         saveDownloadRecord(resourceId, record, filesDir)
     }
@@ -258,7 +282,8 @@ class DownloadManager(
             size = resource.size,
             publishDate = resource.publishDate,
             totalAudioCount = resource.audioList.size,
-            lastUpdateTime = System.currentTimeMillis()
+            lastUpdateTime = System.currentTimeMillis(),
+            remoteAudioJson = gson.toJson(resource.audioList)
         )
     }
 
@@ -278,13 +303,13 @@ class DownloadManager(
      * 因此与调用方（ViewModel/页面）的生命周期无关，可跨页面持续进行。
      * 同一资源正在下载时忽略重复调用；暂停/失败/初始态则会开始或继续安装。
      */
-    fun startInstall(resourceId: String, filesDir: File) {
+    fun startInstall(resourceId: String, filesDir: File, existingResource: RemoteResource? = null) {
         if (states[resourceId]?.status == DownloadStatus.DOWNLOADING) return
         // 使用启动守卫避免重复并发启动（快速连点等场景）
         if (starting.putIfAbsent(resourceId, true) != null) return
         scope.launch {
             try {
-                installResourceById(resourceId = resourceId, filesDir = filesDir)
+                installResourceById(resourceId = resourceId, filesDir = filesDir, existingResource = existingResource)
             } finally {
                 starting.remove(resourceId)
             }
@@ -296,10 +321,10 @@ class DownloadManager(
      * - DOWNLOADING → 暂停（cancelFlag 置位，installResourceById 会在安全点中止）
      * - 其余（IDLE / PAUSED / FAILED / null）→ 在全局作用域中开始/继续安装
      */
-    fun toggleDownload(resourceId: String, filesDir: File) {
+    fun toggleDownload(resourceId: String, filesDir: File, existingResource: RemoteResource? = null) {
         when (getDownloadState(resourceId)?.status) {
             DownloadStatus.DOWNLOADING -> pauseDownload(resourceId)
-            else -> startInstall(resourceId, filesDir)
+            else -> startInstall(resourceId, filesDir, existingResource)
         }
     }
 
@@ -334,7 +359,8 @@ class DownloadManager(
     suspend fun installResourceById(
         resourceId: String,
         filesDir: File,
-        onProgress: (Float) -> Unit = {}
+        onProgress: (Float) -> Unit = {},
+        existingResource: RemoteResource? = null
     ) {
         // 重置取消标志
         val cancelFlag = AtomicBoolean(false)
@@ -346,40 +372,25 @@ class DownloadManager(
         // 设置全局状态为下载中
         updateState(resourceId, DownloadStatus.DOWNLOADING, 0f)
 
-        val detail = repo.getRemoteResourceDetail(resourceId)
-        val fullResource = detail.getOrNull() ?: run {
-            Log.e("DownloadManager", "获取资源详情失败: id=$resourceId")
-            updateState(resourceId, DownloadStatus.FAILED, 0f)
-            return
+        // 获取远程资源详情：优先使用调用方传入、其次从 .download 缓存、最后才请求网络
+        val fullResource = existingResource ?: run {
+            // 暂停后继续时优先从 .download 记录恢复音频 URL，避免重复网络请求
+            readDownloadRecord(resourceId, filesDir)?.toRemoteResource() ?: run {
+                val detail = repo.getRemoteResourceDetail(resourceId)
+                detail.getOrNull() ?: run {
+                    Log.e("DownloadManager", "获取资源详情失败: id=$resourceId")
+                    updateState(resourceId, DownloadStatus.FAILED, 0f)
+                    return
+                }
+            }
         }
 
         Log.i("DownloadManager", "获取详情成功: ${fullResource.displayName}, 音频文件数=${fullResource.audioList.size}")
 
         val audioCount = fullResource.audioList.size
         val hasIcon = fullResource.icon.isNotEmpty()
-        val totalTasks = audioCount + (if (hasIcon) 1 else 0)
 
-        // 下载音频
-        val updatedAudioList = downloadResourceAudio(
-            resourceId = resourceId,
-            audioList = fullResource.audioList,
-            filesDir = filesDir,
-            cancelFlag = cancelFlag,
-            resource = fullResource,
-            onProgress = { audioProgress ->
-                val completedAudio = (audioProgress * audioCount).toInt()
-                val overallProgress = completedAudio.toFloat() / totalTasks
-                updateState(resourceId, DownloadStatus.DOWNLOADING, overallProgress)
-                onProgress(overallProgress)
-            }
-        )
-        // 检查是否被暂停
-        if (cancelFlag.get()) {
-            Log.i("DownloadManager", "下载已暂停，中止安装: id=$resourceId")
-            return
-        }
-
-        // 下载图标
+        // 第 1 步：优先下载图标（文件小、速度快，且可复用 Glide 缓存）
         var localIcon = fullResource.icon
         if (hasIcon) {
             Log.i("DownloadManager", "开始下载图标: url=${fullResource.icon}")
@@ -400,9 +411,37 @@ class DownloadManager(
             } else {
                 Log.e("DownloadManager", "图标下载失败: url=${fullResource.icon}")
             }
-            updateState(resourceId, DownloadStatus.DOWNLOADING, 1f)
-            onProgress(1f)
         }
+
+        // 第 2 步：下载音频
+        val totalAudio = audioCount
+        val updatedAudioList = downloadResourceAudio(
+            resourceId = resourceId,
+            audioList = fullResource.audioList,
+            filesDir = filesDir,
+            cancelFlag = cancelFlag,
+            resource = fullResource,
+            onProgress = { audioProgress ->
+                val completedAudio = (audioProgress * totalAudio).toInt()
+                // 总进度 = 图标已完成部分 + 音频进度
+                val overallProgress = if (hasIcon) {
+                    val iconWeight = 1f / (totalAudio + 1)
+                    iconWeight + completedAudio.toFloat() / (totalAudio + 1)
+                } else {
+                    audioProgress
+                }
+                updateState(resourceId, DownloadStatus.DOWNLOADING, overallProgress)
+                onProgress(overallProgress)
+            }
+        )
+        if (cancelFlag.get()) {
+            Log.i("DownloadManager", "下载已暂停(音频)，中止安装: id=$resourceId")
+            return
+        }
+
+        // 最终进度 = 100%
+        updateState(resourceId, DownloadStatus.DOWNLOADING, 1f)
+        onProgress(1f)
 
         // 所有文件下载完成，一次性写入 Room DB（参照 C# SaveResourceJson）
         repo.installResourceWithLocalData(fullResource, updatedAudioList, localIcon)
@@ -577,7 +616,7 @@ class DownloadManager(
         }
 
         // 2. 检查 Glide 磁盘缓存（浏览时图片已被渲染，Glide 自动缓存到 image_manager_disk_cache）
-        val glideCachedFile = getGlideCachedIcon(iconUrl, filesDir)
+        val glideCachedFile = getGlideCachedIcon(iconUrl)
         if (glideCachedFile != null) {
             audioDir.mkdirs()
             glideCachedFile.copyTo(iconFile, overwrite = true)
@@ -620,6 +659,31 @@ class DownloadManager(
             .ifEmpty { fallback }
     }
 
+    /**
+     * 使用 Glide 的 downloadOnly API 从磁盘缓存中查找图标。
+     * Glide 的缓存 key 包含了 URL + 尺寸 + transformation 等多种信息，
+     * 手动计算 SHA-256 无法匹配，因此直接用 Glide 的 API 查询。
+     * 100ms 超时：缓存命中则立即返回；未命中不阻塞安装流程，走正常网络下载。
+     */
+    private fun getGlideCachedIcon(iconUrl: String): File? {
+        if (iconUrl.isEmpty()) return null
+        return try {
+            val future = Glide.with(MyApp.instance)
+                .asFile()
+                .load(iconUrl)
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .submit()
+            val cachedFile = try {
+                future.get(100, TimeUnit.MILLISECONDS)
+            } catch (_: java.util.concurrent.TimeoutException) {
+                null
+            }
+            cachedFile?.takeIf { it.exists() && it.length() > 0 }
+        } catch (_: Exception) {
+            null
+        }
+    }
+
     /** 从 URL 中提取文件扩展名（含点号，如 .mp3），无扩展名则返回空字符串 */
     private fun extractExtensionFromUrl(url: String): String {
         val name = url.substringAfterLast('/').substringBefore('?')
@@ -627,45 +691,7 @@ class DownloadManager(
         return if (dotIndex >= 0) name.substring(dotIndex) else ""
     }
 
-    // ==================== 图标缓存优化（Glide 磁盘缓存 + installed_icons） ====================
-
-    /**
-     * 计算 Glide 磁盘缓存使用的 SafeKey。
-     * Glide 内部使用 SHA-256 对缓存键取哈希后做 Base64 URL-Safe 编码，
-     * 用于在 image_manager_disk_cache 目录中命名缓存文件。
-     */
-    private fun computeGlideSafeKey(url: String): String {
-        val digest = java.security.MessageDigest.getInstance("SHA-256")
-        digest.update(url.toByteArray(Charsets.UTF_8))
-        return android.util.Base64.encodeToString(
-            digest.digest(),
-            android.util.Base64.URL_SAFE or android.util.Base64.NO_WRAP
-        )
-    }
-
-    /**
-     * 从 Glide 磁盘缓存中查找图标文件。
-     * 用户在商店/搜索页浏览时，图标已经过 Glide 加载并缓存到
-     * [appCacheDir]/image_manager_disk_cache/ 目录下，通过 URL 的
-     * SHA-256 SafeKey 可定位到缓存文件。
-     *
-     * @return 缓存文件引用，未找到则返回 null
-     */
-    private fun getGlideCachedIcon(iconUrl: String, filesDir: File): File? {
-        if (iconUrl.isEmpty()) return null
-        // filesDir = /data/data/{pkg}/files → cacheDir = /data/data/{pkg}/cache
-        val appCacheDir = filesDir.parentFile?.let { File(it, "cache") } ?: return null
-        val glideCacheDir = File(appCacheDir, "image_manager_disk_cache")
-        if (!glideCacheDir.isDirectory) return null
-
-        val safeKey = computeGlideSafeKey(iconUrl)
-        val cachedFile = File(glideCacheDir, safeKey)
-        if (cachedFile.isFile && cachedFile.length() > 0) {
-            Log.i("DownloadManager", "Glide磁盘缓存命中: url=$iconUrl, file=${cachedFile.absolutePath}, size=${cachedFile.length()}bytes")
-            return cachedFile
-        }
-        return null
-    }
+    // ==================== 图标缓存（installed_icons） ====================
 
     /** 将已下载的图标同步复制到 installed_icons 目录供图标选择器使用 */
     private fun syncToInstalledIcons(iconFile: File, resourceId: String, filesDir: File) {
