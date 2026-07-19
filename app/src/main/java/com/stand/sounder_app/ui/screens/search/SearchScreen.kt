@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -42,6 +43,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.stand.sounder_app.MyApp
 import com.stand.sounder_app.data.model.RemoteResource
+import com.stand.sounder_app.ui.components.EmptyState
 import com.stand.sounder_app.ui.components.LoadingSkeleton
 import com.stand.sounder_app.ui.components.ShopCard
 import kotlinx.coroutines.launch
@@ -53,6 +55,22 @@ import androidx.core.content.edit
 
 private const val PREFS_NAME = "sounder_search"
 private const val KEY_HISTORY = "search_history"
+
+@Composable
+private fun SearchEmptyState() {
+    EmptyState(
+        modifier = Modifier.padding(bottom = 72.dp),
+        title = stringResource(R.string.no_search_results),
+        icon = {
+            Icon(
+                painter = painterResource(R.drawable.ic_music),
+                contentDescription = null,
+                modifier = Modifier.size(64.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+            )
+        },
+    )
+}
 
 private fun loadHistory(context: android.content.Context): MutableList<String> {
     val prefs = context.getSharedPreferences(PREFS_NAME, android.content.Context.MODE_PRIVATE)
@@ -203,18 +221,7 @@ fun SearchScreen(
                         }
                     }
                 } else {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(32.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = stringResource(R.string.no_search_results),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
+                    SearchEmptyState()
                 }
             }
 
@@ -223,18 +230,7 @@ fun SearchScreen(
                     LoadingSkeleton(modifier = Modifier.padding(top = 8.dp))
                 }
                 hasSearched && searchResults.isEmpty() -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(32.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = stringResource(R.string.no_search_results),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
+                    SearchEmptyState()
                 }
                 hasSearched -> {
                     LazyColumn(

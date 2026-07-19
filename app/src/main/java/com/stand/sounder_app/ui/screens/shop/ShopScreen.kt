@@ -109,12 +109,10 @@ fun ShopScreen(
                                 Icon(
                                     painter = painterResource(R.drawable.ic_music),
                                     contentDescription = null,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = 80.dp),
+                                    modifier = Modifier.size(64.dp),
                                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                                 )
-                            }
+                            },
                         )
                     }
 
