@@ -26,7 +26,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.zIndex
-import androidx.compose.foundation.shape.CircleShape
+
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -246,7 +246,7 @@ fun EditScreen(
         IconPickerSheet(
             currentIcon = uiState.icon,
             options = uiState.installedIcons,
-            onSelectIcon = { viewModel.updateIcon(it) },
+            onSelectIcon = { viewModel.pickIconFromInstalled(it) },
             onPickFromFile = { iconFilePickerLauncher.launch("image/*") },
             onDismiss = { viewModel.closeIconPicker() }
         )
@@ -438,30 +438,7 @@ private fun EditSearchField(
     )
 }
 
-// ===== 拖拽手柄（6 点样式，纯装饰，拖拽由整行长按手势触发） =====
-@Composable
-private fun DragHandleIcon() {
-    val dotColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.45f)
-    Column(
-        modifier = Modifier
-            .width(20.dp)
-            .padding(start = 2.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(3.dp)
-    ) {
-        repeat(2) {
-            Row(horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-                repeat(3) {
-                    Box(
-                        modifier = Modifier
-                            .size(3.5.dp)
-                            .background(dotColor, CircleShape)
-                    )
-                }
-            }
-        }
-    }
-}
+
 
 // ===== 音频编辑行 =====
 @Composable
@@ -489,7 +466,14 @@ private fun AudioEditRow(
             verticalAlignment = Alignment.CenterVertically
         ) {
             // 拖拽手柄（长按整行可拖拽排序）
-            DragHandleIcon()
+            Icon(
+                painter = painterResource(R.drawable.ic_drag_handle),
+                contentDescription = null,
+                modifier = Modifier
+                    .width(20.dp)
+                    .padding(start = 2.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.45f)
+            )
 
             Spacer(modifier = Modifier.width(8.dp))
 

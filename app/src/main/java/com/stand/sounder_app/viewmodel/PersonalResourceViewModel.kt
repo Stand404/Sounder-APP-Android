@@ -100,9 +100,9 @@ class PersonalResourceViewModel : ViewModel() {
                 audioDir.deleteRecursively()
             }
             // 删除 installed_icons 中的对应图标
-            val iconDir = File(app.filesDir, "installed_icons/$resourceId")
-            if (iconDir.exists()) {
-                iconDir.deleteRecursively()
+            val iconFile = File(app.filesDir, "installed_icons/$resourceId.jpg")
+            if (iconFile.exists()) {
+                iconFile.delete()
             }
             // 清理 DownloadManager 中的全局状态
             app.downloadManager.cleanupResource(resourceId)

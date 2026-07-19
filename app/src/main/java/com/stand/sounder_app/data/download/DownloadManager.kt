@@ -605,9 +605,7 @@ class DownloadManager(
             markIconDownloaded(resourceId, filesDir, resource, true)
             // 同时保存到 installed_icons 专用文件夹（供图标选择器使用）
             try {
-                val installedIconDir = File(filesDir, "installed_icons/$resourceId")
-                installedIconDir.mkdirs()
-                iconFile.copyTo(File(installedIconDir, "icon.png"), overwrite = true)
+                iconFile.copyTo(File(filesDir, "installed_icons/${resourceId}.jpg"), overwrite = true)
             } catch (_: Exception) { }
             iconFile.absolutePath
         } else {

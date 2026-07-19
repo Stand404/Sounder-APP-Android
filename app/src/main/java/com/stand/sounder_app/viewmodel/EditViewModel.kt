@@ -120,17 +120,16 @@ class EditViewModel : ViewModel() {
     }
 
     /**
-     * 从系统文件选择器 Uri 选取图标，自动裁剪为 150×150 正方形并保存到本地
+     * 从系统文件选择器 Uri 选取图标，自动裁剪为 150×150 正方形并保存到资源自身目录
      */
     fun pickIconFromUri(uri: android.net.Uri) {
         val resourceId = _uiState.value.resource?.id ?: return
         viewModelScope.launch {
             try {
                 val context = MyApp.instance
-                // 保存到 installed_icons 专用文件夹
-                val installedIconDir = java.io.File(context.filesDir, "installed_icons/$resourceId")
-                installedIconDir.mkdirs()
-                val destFile = java.io.File(installedIconDir, "icon.png")
+                val destDir = java.io.File(context.filesDir, "resources/$resourceId")
+                destDir.mkdirs()
+                val destFile = java.io.File(destDir, "icon.png")
 
                 // 读取原始 Bitmap
                 val inputStream = context.contentResolver.openInputStream(uri)
@@ -160,6 +159,28 @@ class EditViewModel : ViewModel() {
             } catch (_: Exception) {
                 // 处理失败时回退：直接用源 URI
                 updateIcon(uri.toString())
+            }
+        }
+    }
+
+    /**
+     * 从已安装图标库中选择图标，复制到资源自身目录后使用（不污染 installed_icons）
+     */
+    fun pickIconFromInstalled(installedPath: String) {
+        val resourceId = _uiState.value.resource?.id ?: return
+        viewModelScope.launch {
+            try {
+                val context = MyApp.instance
+                val destDir = java.io.File(context.filesDir, "resources/$resourceId")
+                destDir.mkdirs()
+                val source = java.io.File(installedPath)
+                val extension = source.extension.takeIf { it.isNotBlank() } ?: "png"
+                val destFile = java.io.File(destDir, "icon.$extension")
+                source.copyTo(destFile, overwrite = true)
+                updateIcon(destFile.absolutePath)
+            } catch (_: Exception) {
+                // 回退：直接用原路径
+                updateIcon(installedPath)
             }
         }
     }
@@ -269,12 +290,9 @@ class EditViewModel : ViewModel() {
             val iconsDir = File(MyApp.instance.filesDir, "installed_icons")
             val icons = if (iconsDir.isDirectory) {
                 iconsDir.listFiles()
-                    ?.filter { it.isDirectory && it.name != currentId }
-                    ?.mapNotNull { dir ->
-                        val iconFile = File(dir, "icon.png")
-                        if (iconFile.exists()) {
-                            IconOption(icon = iconFile.absolutePath, displayName = dir.name)
-                        } else null
+                    ?.filter { it.isFile && it.nameWithoutExtension != currentId }
+                    ?.mapNotNull { file ->
+                        IconOption(icon = file.absolutePath, displayName = file.nameWithoutExtension)
                     } ?: emptyList()
             } else emptyList()
             _uiState.value = _uiState.value.copy(
