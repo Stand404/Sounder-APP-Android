@@ -88,7 +88,7 @@ fun NavGraph(
 
         // 任务管理（后台播放监控）
         composable(Screen.Tasks.route) {
-            TaskManagerScreen()
+            TaskManagerScreen(bottomBarVisible = true)
         }
 
         // 子页面（翻页过渡：从右滑入，向左滑出）

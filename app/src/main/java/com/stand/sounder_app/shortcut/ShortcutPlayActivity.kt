@@ -66,7 +66,8 @@ class ShortcutPlayActivity : Activity() {
                         audioPlayer.play(
                             audioList = resource.audioList,
                             resourceId = resource.id,
-                            displayName = resource.name,
+                            displayName = resource.displayName,
+                            shortName = resource.name,
                             icon = resource.icon,
                             startIndex = startIndex,
                             onLoopIndexChanged = { idx ->

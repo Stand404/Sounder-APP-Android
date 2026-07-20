@@ -25,6 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.stand.sounder_app.R
+import com.stand.sounder_app.ui.theme.StopColor
+import com.stand.sounder_app.ui.theme.StopColorStart
 
 /**
  * 浮动停止播放按钮，置于屏幕最底部，不受 bottomBar 和 innerPadding 影响
@@ -55,7 +57,7 @@ fun DetailStopButton(
                     .clip(RoundedCornerShape(50))
                     .background(
                         Brush.linearGradient(
-                            listOf(Color(0xFFFF4757), Color(0xFFFF6B81))
+                            listOf(StopColorStart, StopColor)
                         )
                     )
                     .padding(horizontal = 24.dp, vertical = 12.dp)

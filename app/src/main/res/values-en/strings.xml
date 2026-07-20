@@ -53,7 +53,7 @@
     <string name="loop_single">Single</string>
     <string name="loop_list">List</string>
     <string name="play_order_label">Play Order</string>
-    <string name="order_desc">This setting applies to home grid clicks</string>
+    <string name="order_desc">This setting is used for shortcut clicks</string>
     <string name="order_play">Order</string>
     <string name="random_play">Random</string>
     <string name="stop_playback">Stop Playback</string>
@@ -156,7 +156,6 @@
     <string name="no_matching_tasks">No task matches what you\'re looking for</string>
     <string name="try_different_keywords">Try a different meowy keyword, okay~</string>
     <string name="task_instance_count">%1$d instances</string>
-    <string name="now_playing">Now Playing: %1$s</string>
 
     <!-- Reminder messages (for ViewModel toasts) -->
     <string name="deleted_files">Deleted %1$d files, freed up %2$s♪</string>

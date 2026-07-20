@@ -53,7 +53,7 @@
     <string name="loop_single">Один</string>
     <string name="loop_list">Список</string>
     <string name="play_order_label">Порядок воспроизведения</string>
-    <string name="order_desc">Эта настройка применяется к кликам на главной</string>
+    <string name="order_desc">Эта настройка используется для кликов по ярлыкам</string>
     <string name="order_play">По порядку</string>
     <string name="random_play">Случайно</string>
     <string name="stop_playback">Остановить</string>
@@ -156,7 +156,6 @@
     <string name="no_matching_tasks">Нет такой задачи</string>
     <string name="try_different_keywords">Попробуйте другое кошачье слово, мяу~</string>
     <string name="task_instance_count">%1$d экземпляров</string>
-    <string name="now_playing">Сейчас играет: %1$s</string>
 
     <!-- Напоминания (для toast в ViewModel) -->
     <string name="deleted_files">Удалил %1$d файлов, освободил %2$s♪</string>

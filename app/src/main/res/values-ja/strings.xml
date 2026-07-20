@@ -53,7 +53,7 @@
     <string name="loop_single">単曲</string>
     <string name="loop_list">リスト</string>
     <string name="play_order_label">再生順序</string>
-    <string name="order_desc">この設定はホームグリッドのクリックに適用されます</string>
+    <string name="order_desc">この設定はショートカットクリックに使用されます</string>
     <string name="order_play">順序</string>
     <string name="random_play">ランダム</string>
     <string name="stop_playback">再生を停止</string>
@@ -156,7 +156,6 @@
     <string name="no_matching_tasks">探しているタスクがないにゃ</string>
     <string name="try_different_keywords">にゃんな言葉に変えてもう一度探してみてにゃ~</string>
     <string name="task_instance_count">%1$d インスタンス</string>
-    <string name="now_playing">再生中: %1$s</string>
 
     <!-- リマインドメッセージ（ViewModel toast 用） -->
     <string name="deleted_files">%1$d 個のファイルを削除して、%2$s を解放したにゃ♪</string>

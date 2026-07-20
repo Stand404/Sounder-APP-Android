@@ -19,6 +19,8 @@ val BtnFgSoft = Color(0xFFFFFFFF)     // 深色按钮文字色
 
 // --- 错误/危险色（Light） ---
 val ErrorRed = Color(0xFFEF4444)
+val StopColor = Color(0xFFFF6B81)
+val StopColorStart = Color(0xFFFF4757)
 
 // --- 选中/播放高亮（Light） ---
 val SelectBg = Color(0xFFEDF4FC)
@@ -57,6 +59,7 @@ val DarkAccentBlue = Color(0xFF5DA3E8)
 
 // --- 错误/危险色（Dark，稍亮） ---
 val DarkErrorRed = Color(0xFFEF5350)
+val DarkStopColor = Color(0xFFFF6B81)
 
 // ===== Material3 暗色映射 =====
 val DarkPrimary = DarkAccentBlue

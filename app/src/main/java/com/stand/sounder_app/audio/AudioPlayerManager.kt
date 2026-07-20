@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import java.io.File
 
 /**
- * 后台播放任务信息（参考 docs/03-data-models.md §1.4 PlaybackTaskInfo）
+ * 后台播放任务信息
  */
 data class PlaybackTaskInfo(
     val resourceId: String = "",
@@ -100,6 +100,7 @@ class AudioPlayerManager(private val context: Context) {
         audioList: List<AudioItem>,
         resourceId: String,
         displayName: String,
+        shortName: String = "",
         icon: String = "",
         startIndex: Int = 0,
         onPlaying: ((String) -> Unit)? = null,
@@ -116,7 +117,7 @@ class AudioPlayerManager(private val context: Context) {
             loopStates.remove(resourceId)
         }
 
-        ensureTask(resourceId, displayName, icon)
+        ensureTask(resourceId, displayName, shortName, icon)
 
         return when (playMode) {
             PlayMode.OVERLAY -> playOverlay(audioList[currentIndex], resourceId, onPlaying, onFinish)
@@ -404,13 +405,13 @@ class AudioPlayerManager(private val context: Context) {
 
     // ===== 任务聚合 =====
 
-    private fun ensureTask(resourceId: String, displayName: String, icon: String) {
+    private fun ensureTask(resourceId: String, displayName: String, shortName: String, icon: String) {
         val currentAudioName = currentAudioList.getOrNull(currentIndex)?.name ?: ""
         val existing = resourceTasks[resourceId]
         val task = (existing ?: PlaybackTaskInfo(
             resourceId = resourceId,
             displayName = displayName,
-            shortName = displayName.take(2),
+            shortName = shortName,
             icon = icon,
             createdAt = System.currentTimeMillis()
         )).copy(

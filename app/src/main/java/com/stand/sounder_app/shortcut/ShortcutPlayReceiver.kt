@@ -73,6 +73,7 @@ class ShortcutPlayReceiver : BroadcastReceiver() {
             audioList = audioList,
             resourceId = resource.id,
             displayName = resource.displayName,
+            shortName = resource.name,
             icon = resource.icon,
             startIndex = startIndex,
             onLoopIndexChanged = { idx ->

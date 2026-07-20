@@ -53,7 +53,7 @@
     <string name="loop_single">单曲</string>
     <string name="loop_list">列表</string>
     <string name="play_order_label">播放顺序</string>
-    <string name="order_desc">此设置用于主页格子点击</string>
+    <string name="order_desc">此设置用于快捷方式点击</string>
     <string name="order_play">顺序</string>
     <string name="random_play">随机</string>
     <string name="stop_playback">停止播放</string>
@@ -156,7 +156,6 @@
     <string name="no_matching_tasks">没有想找的任务呢</string>
     <string name="try_different_keywords">换个喵喵词再找找看好不好呀~</string>
     <string name="task_instance_count">%1$d 实例</string>
-    <string name="now_playing">正在播放: %1$s</string>
 
     <!-- 提醒消息（ViewModel toast 用） -->
     <string name="deleted_files">已经删掉 %1$d 个文件，腾出 %2$s 啦♪</string>

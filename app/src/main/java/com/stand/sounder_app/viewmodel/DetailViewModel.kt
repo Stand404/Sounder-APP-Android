@@ -229,11 +229,14 @@ class DetailViewModel : ViewModel() {
 
             val displayName = _uiState.value.resource?.displayName
                 ?: _uiState.value.remoteResource?.displayName ?: ""
+            val shortName = _uiState.value.resource?.name
+                ?: _uiState.value.remoteResource?.name ?: ""
             audioPlayer.setPlaySettings(currentMode, currentOrder, currentLoop)
             audioPlayer.play(
                 audioList = resolvedList,
                 resourceId = resourceId,
                 displayName = displayName,
+                shortName = shortName,
                 startIndex = index,
                 onPlaying = { instanceId ->
                     // MediaPlayer 异步准备完成开始播放
