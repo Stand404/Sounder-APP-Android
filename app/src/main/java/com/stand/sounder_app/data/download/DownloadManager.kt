@@ -38,15 +38,6 @@ data class DownloadState(
     val progress: Float = 0f
 )
 
-data class DownloadProgress(
-    val resourceId: String,
-    val bytesWritten: Long = 0L,
-    val totalBytes: Long = 0L,
-    val isCompleted: Boolean = false,
-    val isFailed: Boolean = false,
-    val errorMessage: String = ""
-)
-
 /**
  * 断点续传记录（.download 文件序列化模型，参照 C# DownloadRecordData）。
  * 持久化每个已完成的音频项与图标状态，进程被杀后重入可恢复进度与已下载文件。
@@ -122,15 +113,12 @@ class DownloadManager(
     // 全局下载状态（跨页面共享）
     private val states = ConcurrentHashMap<String, DownloadState>()
     // 状态变更流（供 ViewModel 实时观察）
-    private val _stateChanges = MutableSharedFlow<DownloadState>(extraBufferCapacity = 1)
+    private val _stateChanges = MutableSharedFlow<DownloadState>(extraBufferCapacity = 64)
     val stateChanges: SharedFlow<DownloadState> = _stateChanges.asSharedFlow()
     // 取消标志：true 表示取消/暂停当前下载
     private val cancelFlags = ConcurrentHashMap<String, AtomicBoolean>()
     // 启动守卫：避免同一资源被重复启动安装
     private val starting = ConcurrentHashMap<String, Boolean>()
-
-    private val downloadProgress = ConcurrentHashMap<String, DownloadProgress>()
-    private val listeners = ConcurrentHashMap<String, (DownloadProgress) -> Unit>()
 
     // ==================== 全局状态 API ====================
 
@@ -161,8 +149,6 @@ class DownloadManager(
         cancelFlags[resourceId]?.set(true)
         starting.remove(resourceId)
         cancelFlags.remove(resourceId)
-        downloadProgress.remove(resourceId)
-        listeners.remove(resourceId)
         states.remove(resourceId)
         Log.i("DownloadManager", "清理下载状态: id=$resourceId")
     }
@@ -236,14 +222,14 @@ class DownloadManager(
         completed: List<AudioItem>
     ) {
         if (resource == null) return
-        val items = completed.map { a ->
-            val orderIndex = resource.audioList.indexOfFirst { it.id == a.id }.coerceAtLeast(0)
+        // 用 completed 列表中的索引作为 orderIndex（不依赖音频 id，因 API 可能返回空 id）
+        val items = completed.mapIndexed { i, a ->
             DownloadedAudioItem(
                 id = a.id,
                 name = a.name,
                 src = a.src,
                 durationMs = a.duration,
-                orderIndex = orderIndex
+                orderIndex = i
             )
         }
         val record = DownloadRecord(
@@ -292,6 +278,8 @@ class DownloadManager(
         val state = states[resourceId] ?: return
         if (state.status != DownloadStatus.DOWNLOADING) return
         cancelFlags[resourceId]?.set(true)
+        // 立即清除启动守卫，避免暂停后点击「继续」时因旧协程尚未退出 finally 块而无法响应
+        starting.remove(resourceId)
         updateState(resourceId, DownloadStatus.PAUSED, state.progress)
         Log.i("DownloadManager", "下载已暂停: id=$resourceId")
     }
@@ -408,13 +396,15 @@ class DownloadManager(
             if (iconResult != null) {
                 localIcon = iconResult
                 Log.i("DownloadManager", "图标已保存: $localIcon")
+                // 图标下载完成后立即更新进度，计入图标权重
+                val iconWeight = if (audioCount > 0) 1f / (audioCount + 1) else 0f
+                updateState(resourceId, DownloadStatus.DOWNLOADING, iconWeight)
             } else {
                 Log.e("DownloadManager", "图标下载失败: url=${fullResource.icon}")
             }
         }
 
         // 第 2 步：下载音频
-        val totalAudio = audioCount
         val updatedAudioList = downloadResourceAudio(
             resourceId = resourceId,
             audioList = fullResource.audioList,
@@ -422,11 +412,11 @@ class DownloadManager(
             cancelFlag = cancelFlag,
             resource = fullResource,
             onProgress = { audioProgress ->
-                val completedAudio = (audioProgress * totalAudio).toInt()
+                val completedAudio = (audioProgress * audioCount).toInt()
                 // 总进度 = 图标已完成部分 + 音频进度
                 val overallProgress = if (hasIcon) {
-                    val iconWeight = 1f / (totalAudio + 1)
-                    iconWeight + completedAudio.toFloat() / (totalAudio + 1)
+                    val iconWeight = 1f / (audioCount + 1)
+                    iconWeight + completedAudio.toFloat() / (audioCount + 1)
                 } else {
                     audioProgress
                 }
@@ -478,23 +468,19 @@ class DownloadManager(
 
         val totalCount = audioList.size
         val results = mutableListOf<AudioItem>()
-        val recoveredSet = mutableSetOf<String>()
+        // 改用 orderIndex 匹配，因为 API 返回的音频 id 可能为空
+        val recoveredIndices = mutableSetOf<Int>()
 
         // 从 .download 记录恢复已完成的音频项（参照 C# 断点续传）
         val record = readDownloadRecord(resourceId, filesDir)
         if (record != null) {
             for (downloaded in record.downloadedAudioItems) {
+                // 跳过重复的 orderIndex（同一音频因多次 persistAudioRecord 可能有多条记录）
+                if (downloaded.orderIndex in recoveredIndices) continue
                 val localFile = File(downloaded.src)
                 if (localFile.exists()) {
-                    results.add(
-                        AudioItem(
-                            id = downloaded.id,
-                            name = downloaded.name,
-                            src = downloaded.src,
-                            duration = downloaded.durationMs
-                        )
-                    )
-                    recoveredSet.add(downloaded.id)
+                    results += audioItem(downloaded.id, downloaded.name, downloaded.src, downloaded.durationMs)
+                    recoveredIndices.add(downloaded.orderIndex)
                     Log.i("DownloadManager", "   [断点续传] 已恢复: ${downloaded.name} (${downloaded.src})")
                 }
             }
@@ -511,8 +497,10 @@ class DownloadManager(
             }
 
             val audio = audioList[index]
-            // 已通过 .download 记录恢复的跳过
-            if (recoveredSet.contains(audio.id)) continue
+            // 已通过 .download 记录恢复的跳过（按 orderIndex 匹配）
+            if (recoveredIndices.contains(index)) {
+                continue
+            }
 
             val ext = extractExtensionFromUrl(audio.url)
             val filename = "audio_${index + 1}$ext"
@@ -523,14 +511,7 @@ class DownloadManager(
             // 文件已存在直接复用（与记录恢复互补的安全网）
             if (localFile.exists()) {
                 Log.i("DownloadManager", "$progressStr 目标文件已存在, 跳过下载: size=${localFile.length()}bytes")
-                results.add(
-                    AudioItem(
-                        id = audio.id,
-                        name = audio.name,
-                        src = localFile.absolutePath,
-                        duration = audio.duration
-                    )
-                )
+                results += audioItem(audio.id, audio.name, localFile.absolutePath, audio.duration)
                 onProgress(results.size.toFloat() / totalCount)
                 persistAudioRecord(resourceId, filesDir, resource, results)
                 continue
@@ -538,7 +519,6 @@ class DownloadManager(
 
             val startTime = System.currentTimeMillis()
             val result = download(
-                resourceId = resourceId,
                 url = audio.url,
                 destFile = localFile,
                 cancelFlag = cancelFlag
@@ -546,34 +526,17 @@ class DownloadManager(
             val elapsed = System.currentTimeMillis() - startTime
 
             if (result.isSuccess) {
-                val size = localFile.length()
-                Log.i("DownloadManager", "$progressStr ✓ 下载成功: ${audio.name} | size=${size}bytes | 耗时=${elapsed}ms | 路径=${localFile.absolutePath}")
-                results.add(
-                    AudioItem(
-                        id = audio.id,
-                        name = audio.name,
-                        src = localFile.absolutePath,
-                        duration = audio.duration
-                    )
-                )
+                Log.i("DownloadManager", "$progressStr ✓ 下载成功: ${audio.name} | size=${localFile.length()}bytes | 耗时=${elapsed}ms | 路径=${localFile.absolutePath}")
+                results += audioItem(audio.id, audio.name, localFile.absolutePath, audio.duration)
                 persistAudioRecord(resourceId, filesDir, resource, results)
             } else {
                 val exception = result.exceptionOrNull()
-                // 取消导致的异常，不视为错误
                 if (exception is CancellationException) {
                     Log.i("DownloadManager", "$progressStr 下载已被取消: ${audio.name}")
                     break
                 }
-                val errMsg = exception?.message ?: "未知错误"
-                Log.e("DownloadManager", "$progressStr ✗ 下载失败: ${audio.name} | 耗时=${elapsed}ms | 原因=$errMsg | url=${audio.url}")
-                results.add(
-                    AudioItem(
-                        id = audio.id,
-                        name = audio.name,
-                        src = audio.url,
-                        duration = audio.duration
-                    )
-                )
+                Log.e("DownloadManager", "$progressStr ✗ 下载失败: ${audio.name} | 耗时=${elapsed}ms | 原因=${exception?.message ?: "未知错误"} | url=${audio.url}")
+                results += audioItem(audio.id, audio.name, audio.url, audio.duration)
             }
             onProgress(results.size.toFloat() / totalCount)
         }
@@ -598,59 +561,50 @@ class DownloadManager(
         cancelFlag: AtomicBoolean? = null,
         resource: RemoteResource? = null
     ): String? {
-        if (iconUrl.isEmpty()) return null
-        if (cancelFlag?.get() == true) return null
+        if (iconUrl.isEmpty() || cancelFlag?.get() == true) return null
 
         val audioDir = File(filesDir, "audio/$resourceId")
-        val filename = extractFilenameFromUrl(iconUrl)
-        val iconFile = File(audioDir, filename)
+        val iconFile = File(audioDir, extractFilenameFromUrl(iconUrl))
 
         Log.i("DownloadManager", "处理图标: url=$iconUrl | 目标=${iconFile.absolutePath}")
 
         // 1. 目标文件已存在 → 直接复用
         if (iconFile.exists()) {
             Log.i("DownloadManager", "图标已存在: size=${iconFile.length()}bytes | 路径=${iconFile.absolutePath}")
-            markIconDownloaded(resourceId, filesDir, resource)
-            syncToInstalledIcons(iconFile, resourceId, filesDir)
-            return iconFile.absolutePath
+            return iconFile.absolutePath.also { onIconReady(resourceId, filesDir, resource, iconFile) }
         }
 
-        // 2. 检查 Glide 磁盘缓存（浏览时图片已被渲染，Glide 自动缓存到 image_manager_disk_cache）
-        val glideCachedFile = getGlideCachedIcon(iconUrl)
-        if (glideCachedFile != null) {
+        // 2. 检查 Glide 磁盘缓存
+        getGlideCachedIcon(iconUrl)?.let { cached ->
             audioDir.mkdirs()
-            glideCachedFile.copyTo(iconFile, overwrite = true)
+            cached.copyTo(iconFile, overwrite = true)
             Log.i("DownloadManager", "✓ 从 Glide 磁盘缓存复制图标: size=${iconFile.length()}bytes | 路径=${iconFile.absolutePath}")
-            markIconDownloaded(resourceId, filesDir, resource)
-            syncToInstalledIcons(iconFile, resourceId, filesDir)
-            return iconFile.absolutePath
+            return iconFile.absolutePath.also { onIconReady(resourceId, filesDir, resource, iconFile) }
         }
 
         // 3. 以上均未命中 → 网络下载
         val startTime = System.currentTimeMillis()
-        val result = download(
-            resourceId = resourceId,
-            url = iconUrl,
-            destFile = iconFile,
-            cancelFlag = cancelFlag
-        )
+        val result = download(url = iconUrl, destFile = iconFile, cancelFlag = cancelFlag)
         val elapsed = System.currentTimeMillis() - startTime
 
         return if (result.isSuccess) {
             Log.i("DownloadManager", "✓ 图标下载成功: size=${iconFile.length()}bytes | 耗时=${elapsed}ms | 路径=${iconFile.absolutePath}")
-            markIconDownloaded(resourceId, filesDir, resource)
-            syncToInstalledIcons(iconFile, resourceId, filesDir)
-            iconFile.absolutePath
+            iconFile.absolutePath.also { onIconReady(resourceId, filesDir, resource, iconFile) }
         } else {
             val exception = result.exceptionOrNull()
             if (exception is CancellationException) {
                 Log.i("DownloadManager", "图标下载已被取消")
                 return null
             }
-            val errMsg = exception?.message ?: "未知错误"
-            Log.e("DownloadManager", "✗ 图标下载失败: 耗时=${elapsed}ms | 原因=$errMsg | url=$iconUrl")
+            Log.e("DownloadManager", "✗ 图标下载失败: 耗时=${elapsed}ms | 原因=${exception?.message ?: "未知错误"} | url=$iconUrl")
             null
         }
+    }
+
+    /** 图标就绪后统一处理（标记记录 + 同步到 installed_icons） */
+    private fun onIconReady(resourceId: String, filesDir: File, resource: RemoteResource?, iconFile: File) {
+        markIconDownloaded(resourceId, filesDir, resource)
+        syncToInstalledIcons(iconFile, resourceId, filesDir)
     }
 
     /** 从 URL 末尾提取文件名 */
@@ -704,7 +658,6 @@ class DownloadManager(
      * 下载文件到指定路径。支持通过 cancelFlag 取消。
      */
     suspend fun download(
-        resourceId: String,
         url: String,
         destFile: File,
         cancelFlag: AtomicBoolean? = null
@@ -722,13 +675,14 @@ class DownloadManager(
             destFile.parentFile?.mkdirs()
             cacheFile.copyTo(destFile, overwrite = true)
             Log.i("DownloadManager", "  已从缓存复制到: ${destFile.absolutePath}")
-            updateProgress(resourceId) {
-                it.copy(isCompleted = true, totalBytes = cacheSize, bytesWritten = cacheSize)
-            }
             return@withContext Result.success(destFile)
         }
         Log.i("DownloadManager", "  缓存未命中: key=$cacheKey, 开始网络下载")
-        return@withContext doDownload(resourceId, url, destFile, cacheFile, cancelFlag)
+        return@withContext try {
+            doDownload(url, destFile, cacheFile, cancelFlag)
+        } catch (e: CancellationException) {
+            Result.failure(e)
+        }
     }
 
     /**
@@ -736,38 +690,38 @@ class DownloadManager(
      * 取消(CancellationException)立即上抛、不重试；其它异常重试最多 3 次。
      */
     private suspend fun doDownload(
-        resourceId: String,
         url: String,
         destFile: File,
         cacheFile: File? = null,
         cancelFlag: AtomicBoolean? = null
-    ): Result<File> = withContext(Dispatchers.IO) {
+    ): Result<File> {
         val maxRetries = 3
         var lastException: Exception? = null
         for (attempt in 0 until maxRetries) {
             if (cancelFlag?.get() == true) {
-                return@withContext Result.failure(CancellationException("Download cancelled"))
+                return Result.failure(CancellationException("Download cancelled"))
             }
             try {
-                return@withContext doDownloadOnce(resourceId, url, destFile, cacheFile, cancelFlag)
+                return doDownloadOnce(url, destFile, cacheFile, cancelFlag)
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
                 lastException = e
                 if (attempt < maxRetries - 1) {
                     Log.w("DownloadManager", "    下载异常(第${attempt + 1}次重试): ${e.message} | url=$url")
-                    delay(300L * (1 shl attempt)) // 指数退避: 300ms → 600ms → 1200ms
+                    delay(300L * (1 shl attempt))
                 }
             }
         }
-        val err = lastException ?: Exception("下载失败")
-        updateProgress(resourceId) { it.copy(isFailed = true, errorMessage = err.message ?: "未知错误") }
-        Result.failure(err)
+        return Result.failure(lastException ?: Exception("下载失败"))
     }
+
+    /** 便捷构造 AudioItem（消除 4 处重复构造代码） */
+    private fun audioItem(id: String, name: String, src: String, duration: Long) =
+        AudioItem(id = id, name = name, src = src, duration = duration)
 
     /** 单次网络下载（含临时文件与重命名），失败向上抛异常 */
     private fun doDownloadOnce(
-        resourceId: String,
         url: String,
         destFile: File,
         cacheFile: File? = null,
@@ -782,7 +736,6 @@ class DownloadManager(
             if (!response.isSuccessful) {
                 val error = "下载失败: HTTP ${response.code}"
                 Log.e("DownloadManager", "    HTTP ${response.code} | 连接耗时=${connTime}ms | url=$url")
-                updateProgress(resourceId) { it.copy(isFailed = true, errorMessage = error) }
                 return Result.failure(Exception(error))
             }
 
@@ -791,8 +744,6 @@ class DownloadManager(
             val lenStr = if (contentLength >= 0) "${contentLength}bytes" else "未知大小"
 
             Log.i("DownloadManager", "    HTTP 200 | 大小=$lenStr | 连接耗时=${connTime}ms")
-
-            updateProgress(resourceId) { it.copy(totalBytes = if (contentLength >= 0) contentLength else 0) }
 
             // 下载到临时文件
             val tempFile = File(destFile.parentFile, "${destFile.name}.tmp")
@@ -818,8 +769,6 @@ class DownloadManager(
                     if (chunkIndex % 64 == 0) {
                         Log.v("DownloadManager", "    ... 已接收 ${totalRead}bytes")
                     }
-                    val finalTotal = totalRead
-                    updateProgress(resourceId) { it.copy(bytesWritten = finalTotal) }
                 }
             }
 
@@ -833,15 +782,8 @@ class DownloadManager(
                 Log.i("DownloadManager", "    已同步到缓存: ${cacheFile.absolutePath}")
             }
 
-            updateProgress(resourceId) { it.copy(isCompleted = true) }
             return Result.success(destFile)
         }
     }
 
-    private fun updateProgress(resourceId: String, update: (DownloadProgress) -> DownloadProgress) {
-        val current = downloadProgress[resourceId] ?: DownloadProgress(resourceId = resourceId)
-        val updated = update(current)
-        downloadProgress[resourceId] = updated
-        listeners[resourceId]?.invoke(updated)
-    }
 }

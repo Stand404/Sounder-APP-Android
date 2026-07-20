@@ -291,7 +291,7 @@ class DetailViewModel : ViewModel() {
             if (cacheFile.exists()) {
                 audio.copy(src = cacheFile.absolutePath)
             } else {
-                val result = downloadManager.download(resourceId, audio.src, cacheFile)
+                val result = downloadManager.download(audio.src, cacheFile)
                 if (result.isSuccess) audio.copy(src = cacheFile.absolutePath) else audio
             }
         }

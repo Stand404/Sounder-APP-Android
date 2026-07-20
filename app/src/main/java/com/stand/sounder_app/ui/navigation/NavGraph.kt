@@ -51,8 +51,9 @@ fun NavGraph(
 
         composable(Screen.Shop.route) {
             ShopScreen(
-                onResourceClick = { resourceId ->
-                    navController.navigate(Screen.Detail.createRoute(resourceId, "cloud"))
+                onResourceClick = { resourceId, isInstalled ->
+                    val mode = if (isInstalled) "local" else "cloud"
+                    navController.navigate(Screen.Detail.createRoute(resourceId, mode))
                 },
                 onSearchClick = {
                     navController.navigate(Screen.Search.route)

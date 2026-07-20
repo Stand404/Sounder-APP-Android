@@ -46,7 +46,7 @@ import com.stand.sounder_app.viewmodel.ShopViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShopScreen(
-    onResourceClick: (String) -> Unit,
+    onResourceClick: (String, Boolean) -> Unit,
     onSearchClick: () -> Unit,
     viewModel: ShopViewModel = viewModel()
 ) {
@@ -129,12 +129,13 @@ fun ShopScreen(
                             ) {
                                 item { Spacer(Modifier.height(4.dp)) }
                                 items(uiState.resources, key = { it.id }) { resource ->
+                                    val installed = resource.id in uiState.installedIds
                                     ShopCard(
                                         resource = resource,
-                                        isInstalled = resource.id in uiState.installedIds,
+                                        isInstalled = installed,
                                         resumable = resource.id in uiState.pendingIds,
                                         downloadState = uiState.downloadStates[resource.id],
-                                        onCardClick = { onResourceClick(resource.id) },
+                                        onCardClick = { onResourceClick(resource.id, installed) },
                                         onToggleInstall = { viewModel.toggleInstall(resource) }
                                     )
                                 }
