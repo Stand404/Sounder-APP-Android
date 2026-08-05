@@ -46,7 +46,6 @@
 ### 获取 APK
 
 前往以下地址下载最新版本 APK：**https://stand.homes/apps/e95a1dab-2f24-4557-ba9d-98e82861705d**  
-或通过 GitHub Releases 页面：**https://github.com/stand404/Sounder/releases**
 
 ### 安装说明
 
