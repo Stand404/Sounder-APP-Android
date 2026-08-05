@@ -18,7 +18,9 @@ import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
+import com.bumptech.glide.signature.ObjectKey
 import com.stand.sounder_app.R
+import java.io.File
 
 /**
  * 通用资源图片组件 —— 统一处理：
@@ -50,7 +52,16 @@ fun ResourceImage(
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop,
                 failure = placeholder(R.drawable.ic_broken_image)
-            )
+            ) {
+                // 本地文件图标：用「路径 + 文件修改时间」作为缓存签名。
+                // 图标文件路径固定（如 resources/<id>/icon.png），内容更新时修改时间变化，
+                // 签名随之失效，Glide 重新加载；否则会一直命中旧缓存（远程 URL 不签名）。
+                if (!icon.startsWith("http")) {
+                    it.signature(ObjectKey("$icon-${File(icon).lastModified()}"))
+                } else {
+                    it
+                }
+            }
         }
     } else {
         Box(
