@@ -108,31 +108,14 @@
     <string name="submission_no_schedule">Unscheduled</string>
     <string name="submission_link_copied">Link copied</string>
 
-    <!-- Submission form page -->
-    <string name="submission_form_submit">Submit</string>
-    <string name="submission_form_info_tip">Peek at others\' formats first and fill everything in nicely, meow~ Reach Stand via the official site if you\'re unsure♪</string>
-    <string name="submission_form_resource_name">Resource Full Name</string>
-    <string name="submission_form_resource_name_placeholder">e.g. Gugu Gaga, Xiaotao Geimu</string>
-    <string name="submission_form_app_name">App Short Name</string>
-    <string name="submission_form_app_name_placeholder">Max 5 chars, e.g. Gugu Gaga, Geimu</string>
+    <!-- Submission list detail fields -->
     <string name="submission_form_brief">Brief</string>
-    <string name="submission_form_brief_placeholder">One sentence that best represents this voice</string>
-    <string name="submission_form_platform">Platform</string>
     <string name="submission_form_platform_id">Platform Account</string>
-    <string name="submission_form_platform_id_placeholder">For contact if needed; leave blank and we can\'t reach you</string>
-    <string name="submission_form_nickname">Nickname</string>
-    <string name="submission_form_nickname_placeholder">How should we address you?</string>
-    <string name="submission_form_source_section">Source Info</string>
     <string name="submission_form_image_source">Image Source</string>
     <string name="submission_form_image_source_link">Image Source Link</string>
-    <string name="submission_form_image_source_link_placeholder">Provide image source link (leave blank if self-captured)</string>
     <string name="submission_form_voice_source">Voice Source</string>
     <string name="submission_form_voice_source_link">Voice Source Link</string>
-    <string name="submission_form_voice_source_link_placeholder">Provide voice source link (leave blank if self-recorded)</string>
     <string name="submission_form_notes">Notes</string>
-    <string name="submission_form_notes_placeholder">Usage requirements or a cloud drive link to prepared materials</string>
-    <string name="submission_form_notes_hint">When notes are blank, image source link and voice source link are required.</string>
-    <string name="submission_form_selected">Selected: %1$s</string>
 
     <!-- Task manager page -->
     <string name="task_manager">Task Manager</string>

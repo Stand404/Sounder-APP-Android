@@ -35,7 +35,7 @@ fun SubmissionsHeader(
     tabIndicatorColors: List<Color>,
     keyword: String,
     onKeywordChange: (String) -> Unit,
-    onNewSubmission: () -> Unit,
+    onSubmitClick: () -> Unit,
     onStatusChange: (SubmissionStatus) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -62,7 +62,7 @@ fun SubmissionsHeader(
                 )
             }
             Button(
-                onClick = onNewSubmission,
+                onClick = onSubmitClick,
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp)
             ) {
                 Icon(

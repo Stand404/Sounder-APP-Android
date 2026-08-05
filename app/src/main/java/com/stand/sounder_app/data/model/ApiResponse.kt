@@ -33,14 +33,6 @@ class RemoteResourceDetailResponse(
     val isSuccess: Boolean get() = data != null
 }
 
-/** 新建投稿响应：{"message":"操作成功","data":{...}} */
-class SubmissionDetailResponse(
-    val message: String = "",
-    val data: Submission? = null
-) {
-    val isSuccess: Boolean get() = data != null
-}
-
 /** 投稿列表响应（列表键为 "submissions"） */
 data class SubmissionListResponse(
     val message: String = "",
@@ -125,20 +117,3 @@ data class Submission(
     val statusEnum: SubmissionStatus get() = SubmissionStatus.fromApi(status)
 }
 
-/**
- * 新建投稿请求体
- * 当 fileLink 为空时，imageSourceLink 与 voiceSourceLink 为必填。
- */
-data class CreateSubmissionRequest(
-    val resourceName: String,
-    val appName: String,
-    val brief: String,
-    val platform: String,
-    val platformId: String? = null,
-    val nickname: String,
-    val imageSource: String,
-    val imageSourceLink: String? = null,
-    val voiceSource: String,
-    val voiceSourceLink: String? = null,
-    val fileLink: String? = null
-)

@@ -3,6 +3,8 @@ package com.stand.sounder_app.ui.screens.submissions
 import android.content.ClipboardManager
 import android.content.ClipData
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -67,7 +69,6 @@ import com.stand.sounder_app.viewmodel.SubmissionsViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SubmissionsScreen(
-    onNewSubmission: () -> Unit,
     viewModel: SubmissionsViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -117,7 +118,7 @@ fun SubmissionsScreen(
                 tabIndicatorColors = tabIndicatorColors,
                 keyword = uiState.keyword,
                 onKeywordChange = { viewModel.setKeyword(it) },
-                onNewSubmission = onNewSubmission,
+                onSubmitClick = { openSubmissionsAdmin(context) },
                 onStatusChange = { viewModel.setStatusFilter(it) }
             )
 
@@ -522,4 +523,10 @@ private fun copyText(context: Context, text: String) {
     val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
     cm?.setPrimaryClip(ClipData.newPlainText("link", text))
     Toast.makeText(context, context.getString(R.string.submission_link_copied), Toast.LENGTH_SHORT).show()
+}
+
+/** 打开投稿管理页面（新建投稿已改为站外引导） */
+private fun openSubmissionsAdmin(context: Context) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://stand.homes/admin/submissions"))
+    runCatching { context.startActivity(intent) }
 }

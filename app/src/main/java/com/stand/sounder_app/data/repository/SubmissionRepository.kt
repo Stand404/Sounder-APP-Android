@@ -1,7 +1,6 @@
 package com.stand.sounder_app.data.repository
 
 import com.stand.sounder_app.data.api.ApiService
-import com.stand.sounder_app.data.model.CreateSubmissionRequest
 import com.stand.sounder_app.data.model.Submission
 
 class SubmissionRepository(
@@ -24,20 +23,6 @@ class SubmissionRepository(
             }
         } catch (e: Exception) {
             if (e is kotlinx.coroutines.CancellationException) throw e
-            Result.failure(e)
-        }
-    }
-
-    /** 新建投稿 */
-    suspend fun createSubmission(request: CreateSubmissionRequest): Result<Submission> {
-        return try {
-            val response = apiService.createSubmission(request)
-            if (response.isSuccess && response.data != null) {
-                Result.success(response.data)
-            } else {
-                Result.failure(Exception(response.message.ifEmpty { "提交失败" }))
-            }
-        } catch (e: Exception) {
             Result.failure(e)
         }
     }

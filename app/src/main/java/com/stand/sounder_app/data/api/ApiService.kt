@@ -1,13 +1,9 @@
 package com.stand.sounder_app.data.api
 
-import com.stand.sounder_app.data.model.CreateSubmissionRequest
 import com.stand.sounder_app.data.model.RemoteResourceDetailResponse
 import com.stand.sounder_app.data.model.RemoteResourceListResponse
-import com.stand.sounder_app.data.model.SubmissionDetailResponse
 import com.stand.sounder_app.data.model.SubmissionListResponse
-import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -42,9 +38,4 @@ interface ApiService {
         @Query("page") page: Int = 1,
         @Query("size") size: Int = 10
     ): SubmissionListResponse
-
-    @POST("api/submissions")
-    suspend fun createSubmission(
-        @Body request: CreateSubmissionRequest
-    ): SubmissionDetailResponse
 }

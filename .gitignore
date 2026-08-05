@@ -18,5 +18,6 @@ local.properties
 
 debug
 .codebuddy
+.reasonix
 .idea
 TODO

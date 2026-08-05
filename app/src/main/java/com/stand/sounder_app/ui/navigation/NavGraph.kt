@@ -16,7 +16,6 @@ import com.stand.sounder_app.ui.screens.search.SearchScreen
 import com.stand.sounder_app.ui.screens.shop.ShopScreen
 import com.stand.sounder_app.ui.screens.settings.SettingsScreen
 import com.stand.sounder_app.ui.screens.submissions.SubmissionsScreen
-import com.stand.sounder_app.ui.screens.submissions.SubmissionFormScreen
 import com.stand.sounder_app.ui.screens.tasks.TaskManagerScreen
 
 @Composable
@@ -67,24 +66,7 @@ fun NavGraph(
 
         // 投稿列表
         composable(Screen.Submissions.route) {
-            SubmissionsScreen(
-                onNewSubmission = {
-                    navController.navigate(Screen.SubmissionForm.route)
-                }
-            )
-        }
-
-        // 新建投稿（子页面，从右滑入）
-        composable(
-            route = Screen.SubmissionForm.route,
-            enterTransition = { slideInHorizontally { fullWidth -> fullWidth } },
-            exitTransition = { slideOutHorizontally { fullWidth -> -fullWidth / 3 } },
-            popEnterTransition = { slideInHorizontally { fullWidth -> -fullWidth / 3 } },
-            popExitTransition = { slideOutHorizontally { fullWidth -> fullWidth } }
-        ) {
-            SubmissionFormScreen(
-                onBack = { navController.popBackStack() }
-            )
+            SubmissionsScreen()
         }
 
         // 任务管理（后台播放监控）

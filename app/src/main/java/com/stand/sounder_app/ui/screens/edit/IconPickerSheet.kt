@@ -67,7 +67,7 @@ fun IconPickerSheet(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "暂无其他已安装资源的图标",
+                        text = "暂无已安装资源的图标",
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }

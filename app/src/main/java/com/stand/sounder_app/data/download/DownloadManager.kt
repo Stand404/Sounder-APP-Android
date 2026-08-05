@@ -666,9 +666,11 @@ class DownloadManager(
             return@withContext Result.failure(CancellationException("Download cancelled"))
         }
 
-        // 检查全局缓存
+        // 检查全局缓存。若缓存路径与目标路径相同（如详情页“下载即缓存”场景），
+        // 则 destFile 本身就是缓存文件，无需单独同步复制，避免 copyTo 自身破坏文件。
         val cacheKey = url.hashCode().toUInt().toString(16)
-        val cacheFile = cacheDir?.let { File(it, cacheKey) }
+        val rawCacheFile = cacheDir?.let { File(it, cacheKey) }
+        val cacheFile = rawCacheFile?.takeIf { it.absolutePath != destFile.absolutePath }
         if (cacheFile != null && cacheFile.exists()) {
             val cacheSize = cacheFile.length()
             Log.i("DownloadManager", "  缓存命中: key=$cacheKey | url=$url | size=${cacheSize}bytes")

@@ -292,16 +292,17 @@ fun SettingsScreen(
                         onClick = { viewModel.openUrl(viewModel.audioFilesUrl) }
                     )
 
-                    // 隐私声明
-                    NoteRow(
-                        icon = { Icon(painterResource(R.drawable.ic_eye), null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
-                        text = stringResource(R.string.privacy_notice)
-                    )
-                    // 反馈提示
-                    NoteRow(
-                        icon = { Icon(painterResource(R.drawable.ic_chat), null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
-                        text = stringResource(R.string.feedback_notice)
-                    )
+                    // 隐私声明 + 反馈提示（两行提示间距收紧）
+                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        NoteRow(
+                            icon = { Icon(painterResource(R.drawable.ic_eye), null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
+                            text = stringResource(R.string.privacy_notice)
+                        )
+                        NoteRow(
+                            icon = { Icon(painterResource(R.drawable.ic_chat), null, tint = MaterialTheme.colorScheme.onSurfaceVariant) },
+                            text = stringResource(R.string.feedback_notice)
+                        )
+                    }
                 }
             }
         }

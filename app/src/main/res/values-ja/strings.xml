@@ -108,31 +108,14 @@
     <string name="submission_no_schedule">未スケジュール</string>
     <string name="submission_link_copied">リンクをコピーしました</string>
 
-    <!-- 投稿フォームページ -->
-    <string name="submission_form_submit">投稿を送信</string>
-    <string name="submission_form_info_tip">投稿前に他の人の形式を参考にして、情報をしっかり埋めてにゃ~わからない時は公式サイトでStandに連絡してね♪</string>
-    <string name="submission_form_resource_name">リソースパック名</string>
-    <string name="submission_form_resource_name_placeholder">例：ググガガ、シャオタオゲイム</string>
-    <string name="submission_form_app_name">APP略称</string>
-    <string name="submission_form_app_name_placeholder">5文字以内、例：ググガガ、ゲイム</string>
+    <!-- 投稿リストの詳細フィールド -->
     <string name="submission_form_brief">概要</string>
-    <string name="submission_form_brief_placeholder">この音声を最も表す一言</string>
-    <string name="submission_form_platform">プラットフォーム</string>
     <string name="submission_form_platform_id">プラットフォームアカウント</string>
-    <string name="submission_form_platform_id_placeholder">連絡用、未記入だとご連絡できません</string>
-    <string name="submission_form_nickname">ニックネーム</string>
-    <string name="submission_form_nickname_placeholder">どのようにお呼びすれば？</string>
-    <string name="submission_form_source_section">出典情報</string>
     <string name="submission_form_image_source">画像出典</string>
     <string name="submission_form_image_source_link">画像出典リンク</string>
-    <string name="submission_form_image_source_link_placeholder">画像の出典リンクを記入（自作の場合は空欄可）</string>
     <string name="submission_form_voice_source">音声出典</string>
     <string name="submission_form_voice_source_link">音声出典リンク</string>
-    <string name="submission_form_voice_source_link_placeholder">音声の出典リンクを記入（自作の場合は空欄可）</string>
     <string name="submission_form_notes">備考</string>
-    <string name="submission_form_notes_placeholder">使用条件や完成済み素材のクラウドリンクを記入</string>
-    <string name="submission_form_notes_hint">備考が未記入の場合、画像出典リンクと音声出典リンクは必須です。</string>
-    <string name="submission_form_selected">選択中：%1$s</string>
 
     <!-- タスク管理ページ -->
     <string name="task_manager">タスク管理</string>

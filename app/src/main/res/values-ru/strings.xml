@@ -108,31 +108,14 @@
     <string name="submission_no_schedule">Без даты</string>
     <string name="submission_link_copied">Ссылка скопирована</string>
 
-    <!-- Страница формы публикации -->
-    <string name="submission_form_submit">Отправить</string>
-    <string name="submission_form_info_tip">Сначала посмотри форматы других и заполни всё как надо, мяу~ Свяжись со Stand через официальный сайт, если что-то неясно♪</string>
-    <string name="submission_form_resource_name">Полное название ресурса</string>
-    <string name="submission_form_resource_name_placeholder">Например: ГугуГага, Сяотао Гейму</string>
-    <string name="submission_form_app_name">Краткое название APP</string>
-    <string name="submission_form_app_name_placeholder">Не более 5 симв., напр.: ГугуГага, Гейму</string>
+    <!-- Поля деталей списка публикаций -->
     <string name="submission_form_brief">Кратко</string>
-    <string name="submission_form_brief_placeholder">Одна фраза, лучше всего описывающая этот голос</string>
-    <string name="submission_form_platform">Платформа</string>
     <string name="submission_form_platform_id">Аккаунт платформы</string>
-    <string name="submission_form_platform_id_placeholder">Для связи; если не указать, мы не сможем связаться с вами</string>
-    <string name="submission_form_nickname">Псевдоним</string>
-    <string name="submission_form_nickname_placeholder">Как к вам обращаться?</string>
-    <string name="submission_form_source_section">Информация об источнике</string>
     <string name="submission_form_image_source">Источник изображений</string>
     <string name="submission_form_image_source_link">Ссылка на источник изображений</string>
-    <string name="submission_form_image_source_link_placeholder">Укажите ссылку на источник (если скриншот свой — оставьте пустым)</string>
     <string name="submission_form_voice_source">Источник звука</string>
     <string name="submission_form_voice_source_link">Ссылка на источник звука</string>
-    <string name="submission_form_voice_source_link_placeholder">Укажите ссылку на источник (если запись своя — оставьте пустым)</string>
     <string name="submission_form_notes">Примечания</string>
-    <string name="submission_form_notes_placeholder">Условия использования или ссылка на облачное хранилище с готовыми материалами</string>
-    <string name="submission_form_notes_hint">Если примечания пусты, ссылки на источники изображений и звука обязательны.</string>
-    <string name="submission_form_selected">Выбрано: %1$s</string>
 
     <!-- Страница диспетчера задач -->
     <string name="task_manager">Диспетчер задач</string>

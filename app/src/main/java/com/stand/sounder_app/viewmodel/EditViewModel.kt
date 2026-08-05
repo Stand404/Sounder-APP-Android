@@ -288,11 +288,9 @@ class EditViewModel : ViewModel() {
 
     fun openIconPicker() {
         viewModelScope.launch {
-            val currentId = _uiState.value.resource?.id
             val iconsDir = File(MyApp.instance.filesDir, "installed_icons")
             val icons = if (iconsDir.isDirectory) {
                 iconsDir.listFiles()
-                    ?.filter { it.isFile && it.nameWithoutExtension != currentId }
                     ?.mapNotNull { file ->
                         IconOption(icon = file.absolutePath, displayName = file.nameWithoutExtension)
                     } ?: emptyList()

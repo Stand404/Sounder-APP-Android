@@ -108,31 +108,14 @@
     <string name="submission_no_schedule">未排程</string>
     <string name="submission_link_copied">已複製連結</string>
 
-    <!-- 投稿表單頁 -->
-    <string name="submission_form_submit">提交投稿</string>
-    <string name="submission_form_info_tip">投稿前可以先瞄瞄別人的格式，把資訊填得滿滿的喵~有疑問就透過官網找Stand哦♪</string>
-    <string name="submission_form_resource_name">資源包全稱</string>
-    <string name="submission_form_resource_name_placeholder">例如：咕咕嘎嘎、小桃給木</string>
-    <string name="submission_form_app_name">APP簡稱</string>
-    <string name="submission_form_app_name_placeholder">不超過5字，例如：咕咕嘎嘎、給木</string>
+    <!-- 投稿列表詳情欄位 -->
     <string name="submission_form_brief">簡述</string>
-    <string name="submission_form_brief_placeholder">最能代表該聲音的一句話</string>
-    <string name="submission_form_platform">平台</string>
     <string name="submission_form_platform_id">平台帳號</string>
-    <string name="submission_form_platform_id_placeholder">有問題方便聯絡，不填則無法聯絡到您</string>
-    <string name="submission_form_nickname">暱稱</string>
-    <string name="submission_form_nickname_placeholder">我們怎麼稱呼您</string>
-    <string name="submission_form_source_section">來源資訊</string>
     <string name="submission_form_image_source">圖片來源</string>
     <string name="submission_form_image_source_link">圖片來源連結</string>
-    <string name="submission_form_image_source_link_placeholder">提供圖片出處連結（自己截取無需填）</string>
     <string name="submission_form_voice_source">聲音來源</string>
     <string name="submission_form_voice_source_link">聲音來源連結</string>
-    <string name="submission_form_voice_source_link_placeholder">提供聲音出處連結（自己錄製無需填）</string>
     <string name="submission_form_notes">備註</string>
-    <string name="submission_form_notes_placeholder">填寫使用要求或提供已做好的素材網盤連結</string>
-    <string name="submission_form_notes_hint">未填寫備註時，圖片來源連結與聲音來源連結為必填項。</string>
-    <string name="submission_form_selected">已選擇：%1$s</string>
 
     <!-- 任務管理頁 -->
     <string name="task_manager">任務管理</string>

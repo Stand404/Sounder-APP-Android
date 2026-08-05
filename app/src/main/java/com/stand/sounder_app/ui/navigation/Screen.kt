@@ -63,5 +63,4 @@ sealed class Screen(val route: String) {
         fun createRoute(resourceId: String, mode: String = "edit") = "edit/$resourceId?mode=$mode"
     }
     data object Search : Screen("search")
-    data object SubmissionForm : Screen("submission_form")
 }
